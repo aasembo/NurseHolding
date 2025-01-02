@@ -1,0 +1,92 @@
+# CakePHP specific files #
+##########################
+/config/app_local.php
+/config/.env
+/logs/*
+/tmp/*
+/vendor/*
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+# Icon must end with two \r
+Icon
+ehthumbs.db
+Thumbs.db
+.directory
+
+# Tool specific files #
+#######################
+# PHPUnit
+.phpunit.cache
+tests.sqlite
+# vim
+*~
+*.swp
+*.swo
+# sublime text & textmate
+*.sublime-*
+*.stTheme.cache
+*.tmlanguage.cache
+*.tmPreferences.cache
+# Eclipse
+.settings/*
+# JetBrains, aka PHPStorm, IntelliJ IDEA
+.idea/*
+# NetBeans
+nbproject/*
+# Visual Studio Code
+.vscode
+# nova
+.nova
+# Sass preprocessor
+.sass-cache/
+# node
+/node_modules/*
+# yarn
+yarn-debug.log
+yarn-error.log
+# Ignore editor configurations
+.editorconfig .gitattributes
+# Ignore GitHub workflows and settings
+.github/
+# Ignore Composer files
+composer.json composer.lock
+# Ignore IDE configurations
+.idea/ .vscode/
+# Ignore system files
+.DS_Store Thumbs.db
+# Ignore built files
+vendor/ node_modules/ bin/
+# Ignore logs and temporary files
+*.log *.tmp *.cache
+# Ignore specific directories
+config/ plugins/ resources/ src/ templates/ tests/ webroot/
+# Ignore other files
+.htaccess README.md phpcs.xml phpstan.neon phpunit.xml.dist
+psalm.xml
+
+# Ignore editor configurations
+.editorconfig .gitattributes
+# Ignore GitHub workflows and settings
+.github/
+# Ignore Composer files
+composer.json composer.lock
+# Ignore IDE configurations
+.idea/ .vscode/
+# Ignore system files
+.DS_Store Thumbs.db
+# Ignore built files
+vendor/ node_modules/ bin/
+# Ignore logs and temporary files
+*.log *.tmp *.cache
+# Ignore specific directories
+config/ plugins/ resources/ src/ templates/ tests/ webroot/
+# Ignore other files
+.htaccess README.md phpcs.xml phpstan.neon phpunit.xml.dist
+psalm.xml
+
