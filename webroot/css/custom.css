@@ -1,0 +1,102 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+/*table tr {
+    background-color: #D8BFD8;
+}*/
+
+table tr.purple-row {
+    background-color: #D8BFD8 !important;
+}
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+
+
+body {
+    background-color: #f7f9fc;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #007bff;
+}
+
+.login-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.logo img {
+    width: 150px;
+    margin-bottom: 1rem;
+}
+
+.welcome-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.login-container form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.login-container button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.login-container button:hover {
+    background: #0056b3;
+}
+.login-container button {
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+}
+
+.home-icon {
+    width: 16px; /* Adjust the size of the icon */
+    height: 16px;
+    margin-right: 5px; /* Space between icon and text */
+    vertical-align: middle; /* Align with text */
+}
+
+
