@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+ on:
+    push: branches: - Dev - Test - Prod
+ jobs:
+   build:
+     runs-on:  ubuntu-4 lightsail
+
+     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up PHP
+        uses:shivammathur/setup-php@v2
+         with:
+          php-version: '8.2'
+      - name: Install dependencies
+        run: composer install
+      - name: Run tests
+        run: vendor/bin/phpunit
+    deploy_dev: if: github.ref == 'refs/heads/Dev' 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+     
+
+      - name: Deploy to Dev run: | 
+          ssh user@dev-server 'cd /path/to/dev && git pull origin Dev && composer 
+          install && php artisan migrate --database=dev_database'
+  deploy_test: if: github.ref == 'refs/heads/Test' runs-on: ubuntu-latest steps: - 
+      name: Checkout code
+        uses: actions/checkout@v2 - name: Deploy to Test run: | ssh 
+          user@test-server 'cd /path/to/test && git pull origin Test && composer 
+          install && php artisan migrate --database=test_database'
+  deploy_prod: if: github.ref == 'refs/heads/Prod' runs-on: ubuntu-latest steps: - 
+      name: Checkout code
+        uses: actions/checkout@v2 - name: Deploy to Prod run: |
+          ssh user@prod-server 'cd /path/to/prod && git pull origin Prod && composer install && php artisan migrate --database=prod_database'
