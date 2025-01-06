@@ -46,11 +46,9 @@ class ExamsTable extends Table
     {
         parent::initialize($config);
 
-<<<<<<< HEAD
+
         $this->setTable('Exams');
-=======
-        $this->setTable('exams');
->>>>>>> main
+
         $this->setDisplayField('exam_type');
         $this->setPrimaryKey('id');
 
