@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\AppController;
+use Cake\ORM\TableRegistry; // Import the TableRegistry
 /**
  * CareAssignments Controller
  *
@@ -15,8 +17,17 @@ class CareAssignmentsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+    
+    public function initialize(): void
+        {
+            parent::initialize();
+            
+        }
+    
+    
     public function index()
     {
+        //dd($this->CareAssignments); // Add this line
         $query = $this->CareAssignments->find()
             ->contain(['Nurses', 'Patients']);
         $careAssignments = $this->paginate($query);

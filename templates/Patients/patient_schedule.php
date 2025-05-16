@@ -153,7 +153,7 @@
                         <?php //debug(/$patients->diagnosis[2]);?>
                         <tr data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
                         <?php //debug($patients);?>
-                            <td>
+                            <td data-table-name="patients" data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
                                     <?php foreach ($patient->exams as $exam): ?> 
                                         <?= h($exam->scheduled_time->ScheduledTime) ?>
                                         <?php //debug($patients);?>
@@ -168,18 +168,23 @@
 
                                     <?php endforeach; ?>
                                 </ul>
-                            </td>
-                            <td><?= h($patient->LastName) ?></td>
-                            <td><?= h($patient->FirstName) ?></td>
 
-                            <td><?= h($patient->age) ?></td>
-                            <td><?= h($patient->gender) ?></td>
+
+
+                                
+                            <td data-table-name="patients" data-name="LastName" onclick="makeCellEditable(this, 'Patients', 'LastName', <?= $patient->id? : 'null' ?>)">
+                                <?= h($patient->LastName) ?>
+                            </td>
+                            <td data-table-name="patients" data-name="FirstName" onclick="makeCellEditable(this, 'Patients', 'FirstName', <?= $patient->id? : 'null' ?>)"><?= h($patient->FirstName) ?></td>
+
+                            <td onclick="makeCellEditable(this, 'Patients', 'age', <?= $patient->id? : 'null' ?>)"><?= h($patient->age) ?></td>
+                            <td onclick="makeCellEditable(this, 'Patients', 'gender', <?= $patient->id? : 'null' ?>)"><?= h($patient->gender) ?></td>
                             <td><?= h($patient->medical_record_number) ?></td>
                             <?php //debug($patient);?>
-                            <td><?= h($patient->diagnosi) ? h($patient->diagnosi->diagnosis_text) : 'N/A' ?></td>
+                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number? : 'null' ?>)"><?= h($patient->diagnosi) ? h($patient->diagnosi->diagnosis_text) : 'N/A' ?></td>
                            
-                            <td><?= isset($patient->imaging_room) ? h($patient->imaging_room->room_name) : 'N/A' ?></td>
-
+                            
+                            <td onclick="makeCellEditable(this, 'imaging_room', 'room_name',<?= $patient->id? : 'null' ?>)"><?= isset($patient->imaging_room) ? h($patient->imaging_room->room_name) : 'N/A' ?><?= h($patient->imaging_room) ?></td>
                             <td>
                                 
                                     <?php foreach ($patient->exams as $exam): ?>
@@ -253,6 +258,46 @@
  <?php endforeach; ?>
 </ul>
 </ul>
+
+<!-- edit cell -->
+<script>
+    function makeCellEditable(cell, tableName, column, timingId) {
+        if (!cell || !tableName || !column || !timingId) {
+            console.error("Invalid parameters provided.", { cell, tableName, column, timingId });
+            return;
+        }
+
+        // Make the cell editable
+        cell.contentEditable = "true";
+
+        // Handle 'keydown' event for 'Enter' key
+        cell.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent newline in editable cell
+
+                const value = cell.textContent.trim(); // Updated value
+
+                // AJAX call to update the table
+                fetch(`/patients/update/${tableName}/${timingId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': '<?= $this->request->getAttribute("csrfToken") ?>' // Include CSRF token
+                    },
+                    body: JSON.stringify({ column, value }) // Send the column and updated value
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          console.log('Update successful:', data.message);
+                      } else {
+                          console.error('Update failed:', data.error);
+                      }
+                  })
+                  .catch(error => console.error('Error:', error));
+            }
+        });
+    }
+</script>
 
 
 <script>
@@ -339,61 +384,6 @@ function sortTable(n) {
 }
 
 </script>
-
-<!-- edit cell -->
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const table = document.getElementById("patients-table");
-
-    // Ensure the table is defined
-    if (!table) {
-        console.error("Table with id 'patients-table' not found.");
-        return;
-    }
-
-    // Listen for the blur event on the table
-    table.addEventListener('blur', function (event) {
-        // Check if the target element is editable
-        if (event.target.contentEditable === 'true') {
-            const column = event.target.getAttribute('data-name'); // Get the column name (start_time, end_time)
-            const value = event.target.textContent.trim();         // Get the updated value
-            const timingId = event.target.closest('tr')?.dataset?.timingId; // Get the timing ID from the row
-
-            // Ensure timingId and column are valid
-            if (!timingId || !['start_time', 'end_time'].includes(column)) {
-                console.error('Invalid column or timingId:', column, timingId);
-                return;
-            }
-
-            // AJAX call to save the updated data
-            fetch(`/timings/update/${timingId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': '<?= $this->request->getAttribute("csrfToken") ?>' // Include CSRF token
-                },
-                body: JSON.stringify({ column, value })  // Send the column and updated value
-            }).then(response => response.json()) // Parse the JSON response
-              .then(data => {
-                  if (data.success) {
-                      console.log('Update successful:', data.message);
-                  } else {
-                      console.error('Update failed:', data.error);
-                  }
-              })
-              .catch(error => console.error('Error:', error));
-        }
-    }, true);
-});
-
-</script>
-
-
-
-
-
-
 
 
 

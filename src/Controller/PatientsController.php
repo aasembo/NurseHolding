@@ -2,6 +2,11 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Cake\ORM\TableRegistry;
+use Cake\Log\Log;
+
+$examsTable = TableRegistry::getTableLocator()->get('Exams');
+
 
 /**
  * Patients Controller
@@ -113,6 +118,72 @@ class PatientsController extends AppController
     //debug($query);
     $this->set(compact('patients')); // Pass data to the view
     //debug($patients);
+}
+
+public function update($tableName = null, $id = null){
+    $this->log('Update method called: ', 'debug');
+    $this->autoRender = false; // No view rendering
+    //$this->request->allowMethod(['post']); // Only allow POST
+
+    $response = ['success' => false];
+    
+    try {
+        $data = $this->request->getData();
+        
+        // Validate required fields
+        $missingParams = [];
+        if (empty($tableName)) {
+            $missingParams[] = 'tableName';
+        }
+        if (empty($id)) {
+            $missingParams[] = 'id';
+        }
+        if (empty($data['column'])) { // Corrected to match the AJAX 'column' field
+            $missingParams[] = 'column';
+        }
+        if (!array_key_exists('value', $data)) { // Ensure 'value' is present, even if empty
+            $missingParams[] = 'value';
+        }
+        if (!empty($missingParams)) {
+            throw new \InvalidArgumentException('Missing required parameters: ' . implode(', ', $missingParams));
+        }
+
+        // Security: Only allow certain tables to be modified
+        $allowedTables = ['Patients', 'Diagnosis','RelatedTable','imaging_rooms','Nurses']; // Add your allowed tables
+        if (!in_array($tableName, $allowedTables)) {
+            throw new \InvalidArgumentException('Unauthorized table access');
+        }
+
+        // Load the appropriate table
+        $table = $this->fetchTable($tableName);
+        
+        // Get the record
+        $record = $table->get($id);
+        
+        // Update the field
+        $table->patchEntity($record, [
+            $data['column'] => $data['value'] // Use 'column' and 'value' from AJAX
+        ]);
+        
+        // Save with validation
+        if ($table->save($record)) {
+            $response = [
+                'success' => true,
+                'message' => 'Field updated successfully',
+                'newValue' => $data['value']
+            ];
+            $this->Flash->success(__('Data updated successfully.'));
+        } else {
+            $response['error'] = 'Validation failed: ' . json_encode($record->getErrors());
+              $this->Flash->error(__('The patient data could not be saved. Please, try again.'));
+        }
+    } catch (\Exception $e) {
+        $response['error'] = $e->getMessage();
+    }
+
+    return $this->response
+        ->withType('application/json')
+        ->withStringBody(json_encode($response));
 }
 
 }

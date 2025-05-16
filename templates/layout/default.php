@@ -36,11 +36,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <a href="<?= $this->Url->build('/') ?>"><span>DCMC</span>NurseHolding</a>
         </div>
         <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+        <p>DCMC Nurse Holding - Your trusted application</p>
+        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Login</a>
+        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">Logout</a>
+        <a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'about']) ?>">About</a>
         </div>
     </nav>
     <main class="main">
@@ -50,6 +52,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
     </main>
     <footer>
+    <div class="footer">
+    <p>DCMC Nurse Holding - Your trusted application</p>
+    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Login</a>
+        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">Logout</a>
+        <a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'about']) ?>">About</a>
+    </ul>
+</div>
     </footer>
 </body>
 </html>
