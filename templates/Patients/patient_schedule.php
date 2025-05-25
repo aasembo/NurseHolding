@@ -44,7 +44,7 @@
                         <th><?= __('') ?></th>
                         <th><?= __('') ?></th>
                         <th><?= __('') ?></th>
-                        <th style="background-color: #fff0d4;"><?= __('IR Lazaga') ?></th>
+                        <th style="background-color: #fff0d4;"><?= __('IR KRISTI') ?></th>
                         <th><?= __('') ?></th>
                         <th><?= __('') ?></th>
                         <th style="background-color: #fff0d4;">
