@@ -11,7 +11,7 @@
                 <thead>
                 <tr> <!-- Purple row -->  
                 <th style="background-color: #fff0d4;"><?= __('Date') ?></th>
-                <th style="background-color: #fff0d4;"><?= __('12/2/2024') ?></th>
+                <th style="background-color: #fff0d4;"><?= __('12/2/2025') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('') ?></th>
                         <th><?= __('') ?></th>
                         <th><?= __('') ?></th>
