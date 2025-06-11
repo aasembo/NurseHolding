@@ -19,7 +19,7 @@ $controllers = [
     'Exams' => ['index', 'view', 'add', 'edit', 'schedule'],
     'Announcements' => ['index', 'view', 'add', 'edit'],
     'Timings' => ['index', 'view', 'add', 'edit'],
-    'ExamStatus' => ['index', 'view', 'add', 'edit'],
+    'ExamStatus' => ['index', 'view', 'add', 'edit','upload'],
     'Diagnosis' => ['index', 'view', 'add', 'edit'],
     
 ];
