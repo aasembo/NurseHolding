@@ -16,10 +16,10 @@ $controllers = [
     'Users' => ['index', 'view', 'add', 'edit', 'login', 'logout'],
     'Patients' => ['index', 'view', 'add', 'edit','patientSchedule'],
     'Specialists' => ['index', 'view', 'add', 'edit'],
-    'Exams' => ['index', 'view', 'add', 'edit', 'schedule'],
+    'Exams' => ['index', 'view', 'add', 'edit', 'upload'],
     'Announcements' => ['index', 'view', 'add', 'edit'],
     'Timings' => ['index', 'view', 'add', 'edit'],
-    'ExamStatus' => ['index', 'view', 'add', 'edit','upload'],
+    'ExamStatus' => ['index', 'view', 'add', 'edit'],
     'Diagnosis' => ['index', 'view', 'add', 'edit'],
     
 ];
