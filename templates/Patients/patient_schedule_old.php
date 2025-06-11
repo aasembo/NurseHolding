@@ -181,7 +181,7 @@
                             <td onclick="makeCellEditable(this, 'Patients', 'gender', <?= $patient->id? : 'null' ?>)"><?= h($patient->gender) ?></td>
                             <td><?= h($patient->medical_record_number) ?></td>
                             <?php //debug($patient);?>
-                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number ? : 'null' ?>)"><?= h($patient->diagnosi) ? h($patient->diagnosi->diagnosis_text) : 'N/A' ?></td>
+                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number? : 'null' ?>)"><?= h($patient->diagnosi) ? h($patient->diagnosi->diagnosis_text) : 'N/A' ?></td>
                            
                             
                             <td onclick="makeCellEditable(this, 'imaging_room', 'room_name',<?= $patient->id? : 'null' ?>)"><?= isset($patient->imaging_room) ? h($patient->imaging_room->room_name) : 'N/A' ?><?= h($patient->imaging_room) ?></td>
@@ -259,13 +259,6 @@
 </ul>
 </ul>
 
-
-<!-- Toastr CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
 <!-- edit cell -->
 <script>
     function makeCellEditable(cell, tableName, column, timingId) {
@@ -278,29 +271,30 @@
         cell.contentEditable = "true";
 
         // Handle 'keydown' event for 'Enter' key
-        cell.addEventListener('focusout', function (event) {
-            const value = cell.textContent.trim(); // Updated value
+        cell.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent newline in editable cell
 
-            // AJAX call to update the table
-            fetch(`/patients/update/${tableName}/${timingId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': '<?= $this->request->getAttribute("csrfToken") ?>' // Include CSRF token
-                },
-                body: JSON.stringify({ column, value }) // Send the column and updated value
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                    toastr.success(data.message || "Update successful!");
-                    //console.log('Update successful:', data.message);
-                      //location.reload()
-                  } else {
-                    toastr.error(data.error || "Update failed.");
-                      console.error('Update failed:', data.error);
-                  }
-              })
-              .catch(error => console.error('Error:', error));
+                const value = cell.textContent.trim(); // Updated value
+
+                // AJAX call to update the table
+                fetch(`/patients/update/${tableName}/${timingId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': '<?= $this->request->getAttribute("csrfToken") ?>' // Include CSRF token
+                    },
+                    body: JSON.stringify({ column, value }) // Send the column and updated value
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          console.log('Update successful:', data.message);
+                      } else {
+                          console.error('Update failed:', data.error);
+                      }
+                  })
+                  .catch(error => console.error('Error:', error));
+            }
         });
     }
 </script>
