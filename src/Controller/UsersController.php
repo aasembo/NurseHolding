@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use Authentication\Controller\Component\AuthenticationComponent;
 
 /**
  * Users Controller
@@ -16,30 +17,47 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
 
+     public function beforeFilter(\Cake\Event\EventInterface $event)
+     {
+         parent::beforeFilter($event);
+         $this->Authentication->addUnauthenticatedActions(['login']);
+     }
+
+
+
+
      public function login()
-    {
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
-            }
-            $this->Flash->error('Invalid username or password, try again');
+{
+    $this->request->allowMethod(['get', 'post']);
+    $result = $this->Authentication->getResult();
+
+    if ($result->isValid()) {
+        $redirect = $this->request->getQuery('redirect');
+
+        // If the redirect is unsafe or invalid, default to /users/index
+        if (!$redirect || !is_string($redirect) || strpos($redirect, '/') !== 0) {
+            $redirect = ['controller' => 'Users', 'action' => 'index'];
         }
+
+        return $this->redirect($redirect);
     }
 
-    public function logout()
-    {
-        return $this->redirect($this->Auth->logout());
+    if ($this->request->is('post') && !$result->isValid()) {
+        $this->Flash->error('Invalid username or password');
     }
-    public function index()
-    {
-        $query = $this->Users->find();
-        $users = $this->paginate($query);
+}
 
-        $this->set(compact('users'));
-    }
 
+
+
+public function logout()
+{
+    $this->request->getSession()->destroy(); // Optional: destroy session
+
+    $this->Authentication->logout();
+
+    return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+}
     /**
      * View method
      *
@@ -114,4 +132,16 @@ class UsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function index()
+{
+    $this->paginate = [
+        'limit' => 10,
+        'order' => ['Users.username' => 'asc'],
+    ];
+    $users = $this->paginate($this->Users);
+    $this->set(compact('users'));
+}
+
+
 }

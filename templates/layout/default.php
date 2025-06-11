@@ -42,7 +42,14 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <p>DCMC Nurse Holding - Your trusted application</p>
         <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Login</a>
         <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">Logout</a>
-        <a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'about']) ?>">About</a>
+        <a href="<?= $this->Url->build(['controller' => 'Patients', 'action' => 'index']) ?>">Patients</a>
+        <a href="<?= $this->Url->build(['controller' => 'Exams', 'action' => 'index']) ?>">Exams</a>
+        <a href="<?= $this->Url->build(['controller' => 'CareAssignments', 'action' => 'Index']) ?>">CareAssignments</a>
+        <a href="<?= $this->Url->build(['controller' => 'Nurses', 'action' => 'Index']) ?>">Nurses</a>
+        <a href="<?= $this->Url->build(['controller' => 'Patients', 'action' => 'patientSchedule']) ?>">patientSchedule</a>
+        <a href="<?= $this->Url->build(['controller' => 'Exams', 'action' => 'upload']) ?>">uploadCSV</a>
+        <a href="<?= $this->Url->build(['controller' => 'Announcements', 'action' => 'index']) ?>">Announcements</a>
+        
         </div>
     </nav>
     <main class="main">
