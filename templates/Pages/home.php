@@ -67,7 +67,7 @@ $controllers = [
 </head>
 <body>
 <div class="container">
-    <h1 class="app-title">🍰 Welcome to DCMC Nurse Holding System</h1>
+    <h1 class="app-title">🍰 Welcome to DCMC Nurse Holding Systemss</h1>
 
     <?php 
     $counter = 0;
