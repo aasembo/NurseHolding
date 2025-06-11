@@ -14,13 +14,14 @@ $base = Router::url('/', true);
 // Manually define your controllers and common actions (dynamic discovery in CakePHP is limited)
 $controllers = [
     'Users' => ['index', 'view', 'add', 'edit', 'login', 'logout'],
-    'Patients' => ['index', 'view', 'add', 'edit'],
-    'Doctors' => ['index', 'view', 'add', 'edit'],
+    'Patients' => ['index', 'view', 'add', 'edit','patientSchedule'],
+    'Specialists' => ['index', 'view', 'add', 'edit'],
     'Exams' => ['index', 'view', 'add', 'edit', 'schedule'],
     'Announcements' => ['index', 'view', 'add', 'edit'],
     'Timings' => ['index', 'view', 'add', 'edit'],
-    'ExamRooms' => ['index', 'view', 'add', 'edit'],
-    'Diagnoses' => ['index', 'view', 'add', 'edit'],
+    'ExamStatus' => ['index', 'view', 'add', 'edit'],
+    'Diagnosis' => ['index', 'view', 'add', 'edit'],
+    
 ];
 ?>
 <!DOCTYPE html>
