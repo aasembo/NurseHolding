@@ -323,7 +323,7 @@ if (tdElements.length > 4) { // Check if the 4th cell exists
             return; // Stop execution if the table doesn't exist
         }
 
-        var rows = table.rows;
+        var rows = table?.rows;
         for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
             var cells = rows[i].getElementsByTagName("TD");
             if (cells.length > 4) { // Ensure there are at least 4 cells

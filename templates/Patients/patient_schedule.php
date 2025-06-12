@@ -155,15 +155,19 @@
                         <?php //debug($patients);?>
                             <td data-table-name="patients" data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
                                     <?php foreach ($patient->exams as $exam): ?> 
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $exam->scheduled_time->id ? : 'null' ?>)">
                                         <?= h($exam->scheduled_time->ScheduledTime) ?>
-                                        <?php //debug($patients);?>
+                                        </span>
+                                        <?php //debug($patient);?>
                                         <?php //debug($exam);?>
                                     <?php endforeach; ?>
                                 </td>
-                            <td>
+                            <td >
                                 <ul>
                                     <?php foreach ($patient->care_assignments as $care_assignments): ?>
+                                        <span onclick="makeCellEditable(this, 'Nurses', 'FirstName', <?= $care_assignments->nurse->id ? : 'null' ?>)">
                                         <?= h($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName)  ?>
+                                        </span>
                                         <?php //debug($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName); ?>
 
                                     <?php endforeach; ?>
@@ -221,19 +225,23 @@
                             <td><?= h($patient->PatientCalledBy) ?></td>
                             <td><?= h($patient->arrival_time) ?></td>
                             <td><?= h($patient->holding_time) ?></td>
-                            <td contentEditable="true" data-name="start_time" data-patient-id="<?= $patient->id ?>">
+                            <td data-name="start_time" data-patient-id="<?= $patient->id ?>">
                             <ul>
                                     <?php foreach ($patient->exams as $exam): ?> 
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'start_time', <?= $exam->scheduled_time->id ? : 'null' ?>)">
                                         <?= h($exam->scheduled_time->start_time) ?>
+                                    </span>
                                         <?php //debug($patients);?>
                                         <?php //debug($exam);?>
                                     <?php endforeach; ?>
                                 </ul>
                             </td>
-                             <td contentEditable="true" data-name="end_time" data-patient-id="<?= $patient->id ?>">
+                             <td data-name="end_time" data-patient-id="<?= $patient->id ?>">
                              <ul>
                                     <?php foreach ($patient->exams as $exam): ?> 
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'end_time', <?= $exam->scheduled_time->id ? : 'null' ?>)">
                                         <?= h($exam->scheduled_time->end_time) ?>
+                                    </span>
                                         <?php //debug($patients);?>
                                         <?php //debug($exam);?>
                                     <?php endforeach; ?>

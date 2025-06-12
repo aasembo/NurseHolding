@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\Log\Log;
+use DateTimeImmutable;
+
 
 $examsTable = TableRegistry::getTableLocator()->get('Exams');
 
@@ -149,7 +151,7 @@ public function update($tableName = null, $id = null){
         }
 
         // Security: Only allow certain tables to be modified
-        $allowedTables = ['Patients', 'Diagnosis','RelatedTable','imaging_rooms','Nurses']; // Add your allowed tables
+        $allowedTables = ['Patients', 'Diagnosis','RelatedTable','imaging_rooms','Nurses','scheduled_time']; // Add your allowed tables
         if (!in_array($tableName, $allowedTables)) {
             throw new \InvalidArgumentException('Unauthorized table access');
         }
@@ -160,15 +162,48 @@ public function update($tableName = null, $id = null){
         // Get the record
         $record = $table->get($id);
         
-        // Update the field
-        $table->patchEntity($record, [
-            $data['column'] => $data['value'] // Use 'column' and 'value' from AJAX
-        ]);
-        
+        if ($data['column'] === 'ScheduledTime' || $data['column'] === 'start_time' || $data['column'] === 'end_time') {
+            try {
+                // Step 1: Parse using correct format (US style with 2-digit year and AM/PM)
+                $date = DateTimeImmutable::createFromFormat('n/j/y, g:i A', $data['value']);
+
+                if (!$date) {
+                    throw new \Exception('Invalid format');
+                }
+
+                // Step 2: Convert to MySQL DATETIME format
+                $value = $date->format('Y-m-d H:i:s');
+            } catch (\Throwable $e) {
+                $value = null;
+            }
+        } else {
+            $value = $data['value'];
+        }
+
+        if ($tableName === "Nurses" && $data['column'] === 'FirstName') {
+            $fullName = trim($data['value']);
+
+            // Split on first space
+            [$firstName, $lastName] = array_pad(explode(' ', $fullName, 2), 2, null);
+
+            $table->patchEntity($record, [
+                'FirstName' => $firstName,
+                'LastName' => $lastName
+            ]);
+        } else {
+            // Default field update
+            //$value = $data['value'];
+
+            $table->patchEntity($record, [
+                $data['column'] => $value
+            ]);
+        }
+                
         // Save with validation
         if ($table->save($record)) {
             $response = [
                 'success' => true,
+                'value'=>$value,
                 'message' => 'Field updated successfully',
                 'newValue' => $data['value']
             ];
