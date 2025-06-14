@@ -31,25 +31,27 @@ $controllers = [
     <title>DCMC Nurse Holding App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'home']) ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
         body {
             background: #f9f9f9;
             color: #333;
         }
-        .app-title {
+        /* .app-title {
             text-align: center;
             margin-top: 30px;
-        }
-        .link-box {
+        } */
+        /* .link-box {
             margin-bottom: 40px;
-        }
+        } */
         .link-box h3 {
-            background: #e91e63;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
+            /* background: #e91e63; */
+            /* color: #000; */
+            /* padding: 10px; */
+            /* border-radius: 8px; */
         }
-        ul.link-list {
+        /* ul.link-list {
             list-style-type: none;
             padding: 0;
         }
@@ -62,13 +64,27 @@ $controllers = [
         }
         ul.link-list li a:hover {
             text-decoration: underline;
-        }
+        } */
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="controller_list">
     <h1 class="app-title">🍰 Welcome to DCMC Nurse Holding Systemss</h1>
-
+        <?php 
+            $iconMap = [
+                'add' => 'fa fa-plus',
+                'edit' => 'fa fa-edit',
+                'delete' => 'fa fa-trash',
+                'view' => 'fa fa-eye',
+                'index' => 'fa fa-home',
+                'login' => 'fa fa-sign-in',
+                'logout' => 'fa fa-sign-out',
+                'patientSchedule' => 'fa fa-clock-o',
+                'upload' => 'fa fa-upload',
+                'default' => 'fa fa-list'
+            ];
+        ?>
     <?php 
     $counter = 0;
     foreach ($controllers as $controller => $actions):
@@ -76,13 +92,40 @@ $controllers = [
             <div class="row">
         <?php endif; ?>
 
-        <div class="column column-50 link-box">
+        
+
+        <div class="column column-50">
+            <div class="link-box">
             <h3><?= h($controller) ?> Controller</h3>
             <ul class="link-list">
                 <?php foreach ($actions as $action): ?>
-                    <li><?= $this->Html->link(ucfirst($action), ['controller' => $controller, 'action' => $action]) ?></li>
+                    <?php if($action == 'index'){
+                        $icon = $iconMap['index'];
+                    }else if($action == 'add'){
+                        $icon = $iconMap['add'];
+                    }else if($action == 'edit'){
+                        $icon = $iconMap['edit'];
+                    }else if($action == 'login'){
+                        $icon = $iconMap['login'];
+                    }else if($action == 'logout'){
+                        $icon = $iconMap['logout'];
+                    }else if($action == 'patientSchedule'){
+                        $icon = $iconMap['patientSchedule'];
+                    }else if($action == 'upload'){
+                        $icon = $iconMap['upload'];
+                    }else if($action == 'view'){
+                        $icon = $iconMap['view'];
+                    }else{
+                        $icon = $iconMap['default'];
+                    }
+                     ?>
+                    <li>  
+                        <span><i class="<?php echo $icon ?>"></i></span>
+                        <?= $this->Html->link(ucfirst($action), ['controller' => $controller, 'action' => $action]) ?>
+                    </li>
                 <?php endforeach; ?>
             </ul>
+                </div>
         </div>
 
         <?php 
@@ -106,6 +149,7 @@ $controllers = [
                 PHP Version: <?= PHP_VERSION ?>
             </p>
         </div>
+    </div>
     </div>
 </div>
 

@@ -187,12 +187,11 @@ class ExamsController extends AppController {
         $patientsTable = TableRegistry::getTableLocator()->get( 'Patients' );
         $diagnosisTable = TableRegistry::getTableLocator()->get( 'Diagnosis' );
         $sedationsTable = TableRegistry::getTableLocator()->get( 'Sedations' );
-        $patientVisitsTable = TableRegistry::getTableLocator()->get( 'patientVisits' );
-        $patientLogsTable = TableRegistry::getTableLocator()->get( 'patientLogs' );
+        $patientVisitsTable = TableRegistry::getTableLocator()->get( 'PatientVisits' );
         $nursingInterventionTable = TableRegistry::getTableLocator()->get( 'NursingIntervention' );
         $scheduledTimeTable = TableRegistry::getTableLocator()->get('ScheduledTime');
         $techniciansTable = TableRegistry::getTableLocator()->get('technicians');
-        $imagingRoomsTable = TableRegistry::getTableLocator()->get( 'ImagingRooms' );
+
         // Read headers from first row
         $headers = $file->current();
         $file->next();
@@ -226,7 +225,7 @@ class ExamsController extends AppController {
 
                 // ===  ===  ===  = PATIENT HANDLING ===  ===  ===  =
                 $patient = $patientsTable->find()
-                ->where(['medical_record_number' => $medicalRecordNumber])
+                ->where( [ 'medical_record_number' => $medicalRecordNumber ] )
                 ->first();
 
                 if ( !$patient ) {
@@ -250,8 +249,8 @@ class ExamsController extends AppController {
                 if ( $this->hasCsvColumn( $headerMap, 'Accession' ) || $this->hasCsvColumn( $headerMap, 'Visit Number' ) ) {
                     $visitData = [
                         'patient_id' => $patient->id,
-                        'accession' => $this->getCsvValue( $row, $headerMap, 'Accession' ),
-                        'visit_number' => $this->getCsvValue( $row, $headerMap, 'Visit Number' ),
+                        'accession' => $this->getCsvValue( $row, $headerMap, 'accession' ),
+                        'visit_number' => $this->getCsvValue( $row, $headerMap, 'visit_number' ),
                     ];
 
                     $visit = $patientVisitsTable->newEntity( $visitData );
@@ -259,9 +258,6 @@ class ExamsController extends AppController {
                         $this->log( 'Failed to save patient visit: ' . json_encode( $visit->getErrors() ), 'error' );
                     }
                 }
-
-                
-
                 $technician = null;
                 // ===  ===  ===  = TECHNICIANS ===  ===  ===  =
                 if ( $this->hasCsvColumn( $headerMap, 'Technician' ) ) {
@@ -294,113 +290,17 @@ class ExamsController extends AppController {
                     }
                 }
 
-                // ===  ===  ===  = imaging rooms ===  ===  ===  =
-                $imagingRoom = null;
-                if ( $this->hasCsvColumn( $headerMap, 'Exam Room' ) ) {
-                    $imagingRoomname = $this->getCsvValue( $row, $headerMap, 'Exam Room' );
-                    if ( $imagingRoomname ) {
-                        $imagingRoom = $imagingRoomsTable->find()
-                        ->where( [ 'room_name' => $imagingRoomname ] )
-                        ->first();
-                        if ( !$imagingRoom ) {
-                           $technicianData = [
-                                'room_name' => $imagingRoomname,
-                            ];
-                            $imagingRoom = $imagingRoomsTable->newEntity( $technicianData );
-                            if ( !$imagingRoomsTable->save( $imagingRoom ) ) {
-                                $this->log( 'Failed to save technician: ' . json_encode( $imagingRoom->getErrors() ), 'error' );
-                                continue;
-                            }
-                        }else{
-                            $this->log( 'Imaging Room created: ' . $imagingRoom->room_name, 'debug' );
-                        }
-                    }
-                }
-
-
-                // ========== SCHEDULED TIME HANDLING ==========
-                $scheduledTimeId = null;
-                if ($this->hasCsvColumn($headerMap, 'Begin Time') || $this->hasCsvColumn($headerMap, 'Scheduled Time') || $this->hasCsvColumn($headerMap, 'Completed Time')) {
-                    $startTime = $this->getCsvValue($row, $headerMap, 'Begin Time') ?? $this->getCsvValue($row, $headerMap, 'Ordered-Begin');
-                    $endTime = $this->getCsvValue($row, $headerMap, 'Completed Time') ?? $this->getCsvValue($row, $headerMap, 'Finalized Time');
-                    $scheduled_Time = $this->getCsvValue($row, $headerMap, 'Scheduled Time') ?? $this->getCsvValue($row, $headerMap, 'Ordered Time'); 
-                    // Convert to database format
-                    if ($startTime) {
-                        $startTime = $this->changeDateFormat($startTime);
-                    }
-                    if ($endTime) {
-                        $endTime = $this->changeDateFormat($endTime);
-                    }
-                    if ($scheduled_Time) {
-                        $scheduled_Time = $this->changeDateFormat($scheduled_Time);
-                    }
-
-                    $this->log("Saving scheduled time----->: ".$scheduled_Time, 'error');
-
-                    
-                    if ($startTime && $endTime) {
-                        // Only save if scheduled_Time, startTime, and endTime are valid (not '0000-00-00 00:00:00' or empty)
-                        $validTimes = [$scheduled_Time, $startTime, $endTime];
-                        $hasInvalid = false;
-                        foreach ($validTimes as $t) {
-                            if (empty($t) || $t === '0000-00-00 00:00:00') {
-                                $hasInvalid = true;
-                                break;
-                            }
-                        }
-                        if ($hasInvalid) {
-                            $this->log("Skipped saving scheduled time due to invalid date/time value.", 'error');
-                        } else {
-                            // Prefer 'scheduled_time' as the main field, fallback to 'ScheduledTime'
-                            $ScheduledTdata = [
-                                'scheduled_time' => $scheduled_Time,
-                                'start_time' => $startTime,
-                                'end_time' => $endTime,
-                            ];
-                            // Remove duplicate/conflicting keys
-                            $scheduledTime = $scheduledTimeTable->newEntity($ScheduledTdata);
-
-                            $this->log("Saving scheduled time: " . json_encode($ScheduledTdata), 'error');
-                            
-                            if (!$scheduledTimeTable->save($scheduledTime)) {
-                                $this->log("Failed to save scheduled time: " . json_encode($scheduledTime->getErrors()), 'error');
-                            } else {
-                                $scheduledTimeId = $scheduledTime->id;
-                                $this->log("Scheduled time saved with ID: " . $scheduledTimeId, 'error');
-                                // Load the appropriate table
-                                $table = $this->fetchTable('scheduled_time');
-                                
-                                // Get the record
-                                $record = $table->get($scheduledTimeId);
-                                $record = $table->patchEntity($record, [
-                                    'ScheduledTime' => $scheduled_Time
-                                ]);
-                                if ($table->save($record)) {
-                                    $this->log("Updated ScheduledTime for ID {$scheduledTimeId}", 'error');
-                                } else {
-                                    $this->log("Failed to update ScheduledTime : " . json_encode($record->getErrors()), 'error');
-                                }
-                            }
-                        }
-               
-                    }
-                }
-
 
                 // ===  ===  ===  = EXAMS ===  ===  ===  =
                 if ( $this->hasCsvColumn( $headerMap, 'Exam' ) ) {
                     $examData = [
                         'patient_id' => $patient->id,
-                        'scheduled_time_id'=> $scheduledTimeId,
-                        'imaging_room_id' => $imagingRoom ? $imagingRoom->id : null,
                         'exam_type' => $this->getCsvValue( $row, $headerMap, 'Exam' ),
-                        'status' => $this->getCsvValue( $row, $headerMap, 'Exam Status' ) ?? 'Pending',
+                        'status' => $this->getCsvValue( $row, $headerMap, 'Exam Code' ) ?? 'Pending',
+                        'imaging_room_id' => $this->getCsvValue( $row, $headerMap, 'imaging_room_id' ) ?? null,
                         'technician_id' => $technician ? $technician->id : null,
-                        'specialist_id' => 1 ?? null,
+                        'specialist_id' => $this->getCsvValue( $row, $headerMap, 'specialist_id' ) ?? null,
                     ];
-
-                    
-
 
                     // Handle location if provided
                     if ( $this->hasCsvColumn( $headerMap, 'location_name' ) ) {
@@ -420,36 +320,14 @@ class ExamsController extends AppController {
                     } else {
                         // ===  ===  ===  = DIAGNOSIS ===  ===  ===  =
                         if ( $this->hasCsvColumn( $headerMap, 'Diagnosis' ) ) {
-                            $diagnosis_text= $this->getCsvValue( $row, $headerMap, 'Diagnosis' );
-                                
-                            $exitDiagnosis = $diagnosisTable->find()
-                                ->where( [ 'diagnosis_text' => $diagnosis_text, 'exam_id' => $exam->id ] )
-                                ->first();
-                            if (!$exitDiagnosis){
-                                $diagnosisData = [
-                                    'exam_id' => $exam->id,
-                                    'diagnosis_text' => $diagnosis_text,
-                                ];
-
-                                $diagnosis = $diagnosisTable->newEntity( $diagnosisData );
-                                if ( !$diagnosisTable->save( $diagnosis ) ) {
-                                    $this->log( 'Failed to save diagnosis: ' . json_encode( $diagnosis->getErrors() ), 'error' );
-                                }
-                            }
-                        }
-
-                        // ===  ===  ===  = PATIENT Comments ===  ===  ===  =
-                        if ( $this->hasCsvColumn( $headerMap, 'Comments' )) {
-                            $visitData = [
+                            $diagnosisData = [
                                 'exam_id' => $exam->id,
-                                'comments' => $this->getCsvValue( $row, $headerMap, 'Comments' ),
-                                'called_by' => "1",
-                                'reviewed_by' => "1",
+                                'diagnosis_text' => $this->getCsvValue( $row, $headerMap, 'Diagnosis' ),
                             ];
 
-                            $visit = $patientLogsTable->newEntity( $visitData );
-                            if ( !$patientLogsTable->save( $visit ) ) {
-                                $this->log( 'Failed to save patient visit: ' . json_encode( $visit->getErrors() ), 'error' );
+                            $diagnosis = $diagnosisTable->newEntity( $diagnosisData );
+                            if ( !$diagnosisTable->save( $diagnosis ) ) {
+                                $this->log( 'Failed to save diagnosis: ' . json_encode( $diagnosis->getErrors() ), 'error' );
                             }
                         }
 
@@ -469,12 +347,46 @@ class ExamsController extends AppController {
                     }
                 }
 
-                
+                // ========== SCHEDULED TIME HANDLING ==========
+                $scheduledTimeId = null;
+                if ($this->hasCsvColumn($headerMap, 'Scheduled Time') || $this->hasCsvColumn($headerMap, 'Completed Time')) {
+                    $startTime = $this->getCsvValue($row, $headerMap, 'Begin Time') ?? $this->getCsvValue($row, $headerMap, 'Ordered-Begin');
+                    $endTime = $this->getCsvValue($row, $headerMap, 'Completed Time') ?? $this->getCsvValue($row, $headerMap, 'Finalized Time');
+                    $scheduledTime = $this->getCsvValue($row, $headerMap, 'Scheduled Time') ?? $this->getCsvValue($row, $headerMap, 'Ordered Time'); 
+                    
+                    if ($startTime && $endTime) {
+                        // Try to find existing scheduled time
+                        $scheduledTime = $scheduledTimeTable->find()
+                            ->where([
+                                'start_time' => $startTime,
+                                'end_time' => $endTime
+
+                            ])
+                            ->first();
+                        
+                        if (!$scheduledTime) {
+                            $scheduledTime = $scheduledTimeTable->newEntity([
+                                'id'=> $patient->id,
+                                'scheduledTime' => $scheduledTime,
+                                'start_time' => $startTime,
+                                'end_time' => $endTime
+                            ]);
+                            
+                            if (!$scheduledTimeTable->save($scheduledTime)) {
+                                $this->log("Failed to save scheduled time: " . json_encode($scheduledTime->getErrors()), 'error');
+                            } else {
+                                $scheduledTimeId = $scheduledTime->id;
+                            }
+                        } else {
+                            $scheduledTimeId = $scheduledTime->id;
+                        }
+                    }
+                }
 
                 // ===  ===  ===  = NURSING INTERVENTION ===  ===  ===  =
                 if ( $this->hasCsvColumn( $headerMap, 'child_life' ) ||
-                    $this->hasCsvColumn( $headerMap, 'piv' ) ||
-                    $this->hasCsvColumn( $headerMap, 'comments' ) ) {
+                $this->hasCsvColumn( $headerMap, 'piv' ) ||
+                $this->hasCsvColumn( $headerMap, 'comments' ) ) {
 
                     $interventionData = [
                         'patient_id' => $patient->id,
@@ -519,8 +431,6 @@ class ExamsController extends AppController {
         : $default;
     }
 
-
-
     /**
     * Helper method to check if CSV has a column
     */
@@ -528,57 +438,6 @@ class ExamsController extends AppController {
     private function hasCsvColumn( $headerMap, $columnName ) {
         return isset( $headerMap[ $columnName ] );
     }
-
-    /**
-    * helper method date to convare in database format
-    *
-    * @return \Cake\Http\Response
-    */
-
-   function changeDateFormat($dateString)
-    {
-        if (empty(trim($dateString))) {
-            return null;
-        }
-
-         $formats = [
-        'n/j/y G:i',  // 1/18/25 10:09
-        'n/j/y H:i',  // just in case
-        'm-d-y G:i',  // 01-08-25 14:29
-        'm-d-y H:i',
-        'm/d/y G:i',
-        'm/d/y H:i',
-        'y-m-d H:i',
-        'Y-m-d H:i',
-    ];
-
-
-        foreach ($formats as $format) {
-            $date = \DateTime::createFromFormat($format, trim($dateString));
-            $errors = \DateTime::getLastErrors();
-            // if ($date && $errors['warning_count'] == 0 && $errors['error_count'] == 0) {
-            //     return $date->format('Y-m-d H:i:s');
-            // }
-            // if (
-            //     $date &&
-            //     is_array($errors) &&
-            //     ($errors['warning_count'] ?? 0) == 0 &&
-            //     ($errors['error_count'] ?? 0) == 0
-            // ) {
-            //     return $date->format('Y-m-d H:i:s');
-            // }
-            $warnings = $errors['warning_count'] ?? 0;
-            $errorsCount = $errors['error_count'] ?? 0;
-
-            if ($date && $warnings == 0 && $errorsCount == 0) {
-                return $date->format('Y-m-d H:i:s');
-            }
-        }
-
-        return null;
-    }
-
-
 
     public function export() {
         $this->response = $this->response->withDownload('exams_export.csv');
