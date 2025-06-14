@@ -50,9 +50,12 @@ table td, table th{
                     </tr>
                 <tr> <!-- Purple row -->  
                        <th style="background-color: #fff0d4;"><?= __('Charge 1') ?></th>
-                        
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
                         <th style="background-color: #fff0d4;"><?= __('IR KRISTI') ?></th>
-                        
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
                         <th style="background-color: #fff0d4;">
                         <i class="fas fa-brain" style="color: #ff69b4; margin-left: 5px;"></i>
                         <?= __('Pedi Hussaini') ?>
@@ -60,7 +63,9 @@ table td, table th{
                     </tr>
                 <tr> 
                      <th style="background-color: #fff0d4;"><?= __('Charge 2') ?></th>
-                        
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
                         <th style="background-color: #fff0d4;">
                         <i class="fas fa-heart" style="color: #ff6771; margin-left: 5px;"></i>
                         <?= __('Neuro Patel') ?> 
