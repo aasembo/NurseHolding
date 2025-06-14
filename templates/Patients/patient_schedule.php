@@ -46,97 +46,26 @@ table td, table th{
                 <th style="background-color: #fff0d4;"><?= __('Date') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('12/2/2025') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
+                        
                     </tr>
                 <tr> <!-- Purple row -->  
                        <th style="background-color: #fff0d4;"><?= __('Charge 1') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
+                        
                         <th style="background-color: #fff0d4;"><?= __('IR KRISTI') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
+                        
                         <th style="background-color: #fff0d4;">
                         <i class="fas fa-brain" style="color: #ff69b4; margin-left: 5px;"></i>
                         <?= __('Pedi Hussaini') ?>
                         </th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
                     </tr>
                 <tr> 
                      <th style="background-color: #fff0d4;"><?= __('Charge 2') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
+                        
                         <th style="background-color: #fff0d4;">
                         <i class="fas fa-heart" style="color: #ff6771; margin-left: 5px;"></i>
                         <?= __('Neuro Patel') ?> 
                     </th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
-                        <th><?= __('') ?></th>
+
                     </tr>
 
                     
@@ -225,7 +154,7 @@ table td, table th{
                             <td>
                                 
                                     <?php foreach ($patient->exams as $exam): ?>
-                                        <li><?= h($exam->exam_type) ?></li>
+                                        <span><?= h($exam->exam_type) ?></span>
                                         <?php //debug($exam);?>
                                     <?php endforeach; ?>
                                 
