@@ -2,11 +2,44 @@
 <script>
     console.log("Testing basic script execution");
 </script>
+<style>
+    .table .thead-dark th {
+    color: #fff;
+    background-color: #212529;
+    border-color: #32383e;
+    padding:10px;
+}
+table td:focus-visible{
+    border:none;
+    outline:none;
+}
 
-<div class="row">
+ul{
+    margin:0;
+}
+table{
+    white-space:nowrap;
+}
+table td, table th{
+    font-size:14px;
+    padding:10px !important;
+        border: 1px solid #efefef;
+}
+.content{
+    border-radius:12px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-bottom:20px;
+}
+.content h3{
+    font-size:25px;
+    font-weight:600;
+}
+    </style>
+<div class="">
     <div class="column-responsive">
         <div class="patients index content">
             <h3><?= __('Patient Information') ?></h3>
+            <div class="table-responsive">
             <table id="patients-table" class="table table-bordered">
                 <thead>
                 <tr> <!-- Purple row -->  
@@ -107,7 +140,7 @@
                     </tr>
 
                     
-        <tr class="purple-row"  data-timing-id="1"> <!-- Purple row -->
+        <tr class="thead-dark"  data-timing-id="1"> <!-- Purple row -->
            <th onclick="sortTable(0)"><i class="fas fa-clock" style="color: #ff6771; margin-left: 5px;"></i>ScheduledTime</th>
             <th onclick="sortTable(1)"><i class="fas fa-user-nurse" style="color: #ff6771; margin-left: 5px;"></i>Nurse</th>
             <th onclick="sortTable(2)">Patient LastName</th>
@@ -163,7 +196,7 @@
                                     <?php endforeach; ?>
                                 </td>
                             <td >
-                                <ul>
+                                
                                     <?php foreach ($patient->care_assignments as $care_assignments): ?>
                                         <span onclick="makeCellEditable(this, 'Nurses', 'FirstName', <?= $care_assignments->nurse->id ? : 'null' ?>)">
                                         <?= h($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName)  ?>
@@ -171,7 +204,7 @@
                                         <?php //debug($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName); ?>
 
                                     <?php endforeach; ?>
-                                </ul>
+                               
 
 
 
@@ -252,6 +285,7 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+                                    </div>
             <!-- Pagination Controls -->
         </div>
     </div>
