@@ -2,50 +2,42 @@
 <script>
     console.log("Testing basic script execution");
 </script>
-<style>
-    .table .thead-dark th {
-    color: #fff;
-    background-color: #212529;
-    border-color: #32383e;
-    padding:10px;
-}
-table td:focus-visible{
-    border:none;
-    outline:none;
-}
 
-ul{
-    margin:0;
-}
-table{
-    white-space:nowrap;
-}
-table td, table th{
-    font-size:14px;
-    padding:10px !important;
-        border: 1px solid #efefef;
-}
-.content{
-    border-radius:12px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    margin-bottom:20px;
-}
-.content h3{
-    font-size:25px;
-    font-weight:600;
-}
-    </style>
-<div class="">
+<div class="row">
     <div class="column-responsive">
         <div class="patients index content">
             <h3><?= __('Patient Information') ?></h3>
-            <div class="table-responsive">
             <table id="patients-table" class="table table-bordered">
                 <thead>
                 <tr> <!-- Purple row -->  
                 <th style="background-color: #fff0d4;"><?= __('Date') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('12/2/2025') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
                     </tr>
                 <tr> <!-- Purple row -->  
                        <th style="background-color: #fff0d4;"><?= __('Charge 1') ?></th>
@@ -59,6 +51,26 @@ table td, table th{
                         <i class="fas fa-brain" style="color: #ff69b4; margin-left: 5px;"></i>
                         <?= __('Pedi Hussaini') ?>
                         </th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
                     </tr>
                 <tr> 
                      <th style="background-color: #fff0d4;"><?= __('Charge 2') ?></th>
@@ -69,10 +81,33 @@ table td, table th{
                         <i class="fas fa-heart" style="color: #ff6771; margin-left: 5px;"></i>
                         <?= __('Neuro Patel') ?> 
                     </th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
+                        <th><?= __('') ?></th>
                     </tr>
 
                     
-        <tr class="thead-dark"  data-timing-id="1"> <!-- Purple row -->
+        <tr class="purple-row"  data-timing-id="1"> <!-- Purple row -->
            <th onclick="sortTable(0)"><i class="fas fa-clock" style="color: #ff6771; margin-left: 5px;"></i>ScheduledTime</th>
             <th onclick="sortTable(1)"><i class="fas fa-user-nurse" style="color: #ff6771; margin-left: 5px;"></i>Nurse</th>
             <th onclick="sortTable(2)">Patient LastName</th>
@@ -112,23 +147,21 @@ table td, table th{
 <?php //endif; */?> 
 
                 <tbody>
-                <?php if($patients){?>
+                <?php //debug($patient);?>
                     <?php foreach ($patients as $patient) :  ?>
                         <?php //debug($patients);?>
                         <?php //debug(/$patients->diagnosis[2]);?>
                         <tr data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
                         <?php //debug($patients);?>
                             <td data-table-name="patients" data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
-                                <?php if (!empty($exam->scheduled_time)): ?>
-                                    <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $exam->scheduled_time->id ?>)">
+                                    <?php foreach ($patient->exams as $exam): ?> 
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $exam->scheduled_time->id ? : 'null' ?>)">
                                         <?= h($exam->scheduled_time->ScheduledTime) ?>
-                                    </span>
-                                <?php else: ?>
-                                    <span class="text-muted" onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', null)">
-                                        (No Scheduled Time)
-                                    </span>
-                                <?php endif; ?>
-                            </td>
+                                        </span>
+                                        <?php //debug($patient);?>
+                                        <?php //debug($exam);?>
+                                    <?php endforeach; ?>
+                                </td>
                             <td >
                                 <ul>
                                     <?php foreach ($patient->care_assignments as $care_assignments): ?>
@@ -152,35 +185,14 @@ table td, table th{
                             <td onclick="makeCellEditable(this, 'Patients', 'gender', <?= $patient->id? : 'null' ?>)"><?= h($patient->gender) ?></td>
                             <td><?= h($patient->medical_record_number) ?></td>
                             <?php //debug($patient);?>
-                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number ? : 'null' ?>)">
-                                <?php
-                                    $diagnosisText = 'N/A';
-
-                                    if (!empty($exam) && !empty($exam->diagnosis) && isset($exam->diagnosis[0]->diagnosis_text)) {
-                                        $diagnosisText = h($exam->diagnosis[0]->diagnosis_text);
-                                    }
-                                    ?>
-
-                                    <?= $diagnosisText ?>
-                                
-                            </td>
+                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number ? : 'null' ?>)"><?= h($patient->diagnosi) ? h($patient->diagnosi->diagnosis_text) : 'N/A' ?></td>
                            
                             
-                            <td onclick="makeCellEditable(this, 'imaging_room', 'room_name',<?= $patient->id? : 'null' ?>)">
-                                <?php
-                                    $roomName = 'N/A';
-
-                                    if (!empty($exam) && isset($exam['imaging_room']['room_name'])) {
-                                        $roomName = h($exam['imaging_room']['room_name']);
-                                    }
-                                    ?>
-
-                                    <?= $roomName ?>
-                            </td>
+                            <td onclick="makeCellEditable(this, 'imaging_room', 'room_name',<?= $patient->id? : 'null' ?>)"><?= isset($patient->imaging_room) ? h($patient->imaging_room->room_name) : 'N/A' ?><?= h($patient->imaging_room) ?></td>
                             <td>
                                 
                                     <?php foreach ($patient->exams as $exam): ?>
-                                        <span><?= h($exam->exam_type) ?></span>
+                                        <li><?= h($exam->exam_type) ?></li>
                                         <?php //debug($exam);?>
                                     <?php endforeach; ?>
                                 
@@ -208,48 +220,38 @@ table td, table th{
                             <td><input type="checkbox" <?= $patient->monitoring ? 'checked' : '' ?>></td>
                             <td><input type="checkbox" <?= $patient->meds ? 'checked' : '' ?>></td>
                             <td><?= h($patient->medication_details) ?></td>
-                            <?php
-                                $comments = 'N/A';
-
-                                if (!empty($exam['patient_logs']) && isset($exam['patient_logs'][0]['comments'])) {
-                                    $comments = h($exam['patient_logs'][0]['comments']);
-                                }
-                            ?>
-                            <td><?= $comments ?></td>
+                            <td><?= h($patient->comments) ?></td>
                             <td><?= h($patient->OrderReviewedBy) ?></td>
                             <td><?= h($patient->PatientCalledBy) ?></td>
                             <td><?= h($patient->arrival_time) ?></td>
                             <td><?= h($patient->holding_time) ?></td>
                             <td data-name="start_time" data-patient-id="<?= $patient->id ?>">
                             <ul>
-                                    <?php if (!empty($exam->scheduled_time)): ?>
-                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'start_time', <?= $exam->scheduled_time->id ?>)">
-                                            <?= h($exam->scheduled_time->start_time) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-muted" onclick="makeCellEditable(this, 'scheduled_time', 'start_time', null)">
-                                            (No Start Time)
-                                        </span>
-                                    <?php endif; ?>
+                                    <?php foreach ($patient->exams as $exam): ?> 
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'start_time', <?= $exam->scheduled_time->id ? : 'null' ?>)">
+                                        <?= h($exam->scheduled_time->start_time) ?>
+                                    </span>
+                                        <?php //debug($patients);?>
+                                        <?php //debug($exam);?>
+                                    <?php endforeach; ?>
                                 </ul>
                             </td>
-                            <td data-name="end_time" data-patient-id="<?= $patient->id ?>">
-                                    <?php if (!empty($exam->scheduled_time)): ?>
-                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'end_time', <?= $exam->scheduled_time->id ?>)">
-                                            <?= h($exam->scheduled_time->end_time) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-muted">(No End Time)</span>
-                                    <?php endif; ?>
-                            </td>
+                             <td data-name="end_time" data-patient-id="<?= $patient->id ?>">
+                             <ul>
+                                    <?php foreach ($patient->exams as $exam): ?> 
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'end_time', <?= $exam->scheduled_time->id ? : 'null' ?>)">
+                                        <?= h($exam->scheduled_time->end_time) ?>
+                                    </span>
+                                        <?php //debug($patients);?>
+                                        <?php //debug($exam);?>
+                                    <?php endforeach; ?>
+                                </ul>
                             <td><?= h($patient->dc_time) ?></td>
                             <td><?= h($patient->dc_location) ?></td>
                         </tr>
-                    <?php endforeach; 
-                    }?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-                </div>
             <!-- Pagination Controls -->
         </div>
     </div>
@@ -258,12 +260,10 @@ table td, table th{
 
 <h3>Nurses</h3>
 <ul>
-<?php 
-if(isset($patient) && $patient->care_assignments){
-foreach ($patient->care_assignments as $care_assignments): ?>
+<?php foreach ($patient->care_assignments as $care_assignments): ?>
  <li><?= h($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName)  ?></li>
  <?php //debug($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName); ?>
- <?php endforeach; }?>
+ <?php endforeach; ?>
 </ul>
 </ul>
 

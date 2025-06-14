@@ -116,6 +116,14 @@ class PatientsController extends AppController
         ]
     ]); // Ensure association name is correct (case-sensitive)
 
+    $query = $this->Patients->find()
+        ->contain(['CareAssignments'=>['Nurses'],'Exams'=>['ScheduledTimes',"Diagnosis", "PatientLogs", "ImagingRooms","Technicians",
+        'Sedations' => function ($q) { // Ensure it's correctly joined
+                return $q;
+            }
+        ]
+    ]);
+
     $patients = $this->paginate($query);
     //debug($query);
     $this->set(compact('patients')); // Pass data to the view
