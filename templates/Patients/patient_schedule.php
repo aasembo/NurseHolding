@@ -251,6 +251,26 @@ table td, table th{
             </table>
                 </div>
             <!-- Pagination Controls -->
+            <div class="pagination">
+                <?php if ($this->Paginator->hasPage()): ?>
+                    <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total')) ?>
+                <?php endif; ?>
+
+                
+                <?php if ($this->Paginator->hasPage()): ?>
+                    <?= $this->Paginator->numbers() ?>
+                <?php endif; ?>
+                <?php if ($this->Paginator->hasNext() || $this->Paginator->hasPrev()): ?>
+                    <span class="separator">|</span>
+                <?php endif; ?>     
+                <?php if ($this->Paginator->hasPrev()): ?>
+                    <?= $this->Paginator->prev('< ' . __('Previous')) ?>
+                <?php endif; ?>
+
+                <?php if ($this->Paginator->hasNext()): ?>
+                    <?= $this->Paginator->next(__('Next') . ' >') ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
@@ -271,6 +291,9 @@ foreach ($patient->care_assignments as $care_assignments): ?>
 <!-- Toastr CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+<!-- jQuery (required for toastr) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- Toastr JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -289,6 +312,9 @@ foreach ($patient->care_assignments as $care_assignments): ?>
         cell.addEventListener('focusout', function (event) {
             const value = cell.textContent.trim(); // Updated value
 
+           
+         
+            
             // AJAX call to update the table
             fetch(`/patients/update/${tableName}/${timingId}`, {
                 method: 'POST',
@@ -299,14 +325,20 @@ foreach ($patient->care_assignments as $care_assignments): ?>
                 body: JSON.stringify({ column, value }) // Send the column and updated value
             }).then(response => response.json())
               .then(data => {
-                  if (data.success) {
-                    toastr.success(data.message || "Update successful!");
-                    //console.log('Update successful:', data.message);
-                      //location.reload()
-                  } else {
+                if(data.success) {
+                // Remove any existing toastr with the same id to prevent duplicate messages
+               
+                // Remove any existing toastr with the same id to prevent duplicate messages
+                toastr.clear(); // This will clear all toastr notifications before showing a new one
+
+                toastr.success(data.message || "Update successful!");
+                //console.log('Update successful:', data.message);
+                //location.reload()
+                } else {
+                    toastr.clear();
                     toastr.error(data.error || "Update failed.");
-                      console.error('Update failed:', data.error);
-                  }
+                    console.error('Update failed:', data.error);
+                }
               })
               .catch(error => console.error('Error:', error));
         });
@@ -398,7 +430,3 @@ function sortTable(n) {
 }
 
 </script>
-
-
-
-
