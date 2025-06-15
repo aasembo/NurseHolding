@@ -194,9 +194,9 @@ public function update($tableName = null, $id = null){
         if (in_array($data['column'], ['ScheduledTime', 'start_time', 'end_time'])) {
             // Validate input format strictly: n/j/y, g:i A
             $pattern = '/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{2},\s(0?[1-9]|1[0-2]):([0-5][0-9])\s(AM|PM)$/i';
-            if (!preg_match($pattern, $data['value'])) {
-            throw new \InvalidArgumentException('Invalid date/time format. Use M/D/YY, h:mm AM/PM');
-            }
+            // if (!preg_match($pattern, $data['value'])) {
+            // throw new \InvalidArgumentException('Invalid date/time format. Use M/D/YY, h:mm AM/PM');
+            // }
 
             // Parse date
             $date = DateTimeImmutable::createFromFormat('n/j/y, g:i A', $data['value']);
