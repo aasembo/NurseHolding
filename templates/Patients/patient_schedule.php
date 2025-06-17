@@ -40,7 +40,7 @@ table td, table th{
         <div class="patients index content">
             <h3><?= __('Patient Information') ?></h3>
             <div class="table-responsive">
-            <table id="patients-table" class="table table-bordered">
+            <table id="patients-table">
                 <thead>
                 <tr> <!-- Purple row -->  
                 <th style="background-color: #fff0d4;"><?= __('Date') ?></th>
