@@ -262,7 +262,7 @@ footer p{
 <nav class="navbar navbar-expand-lg header_navbar">
   <div class="container-fluid">
     <!-- Brand / Title -->
-    <a class="navbar-brand" href="<?= $this->Url->build('/') ?>"><img src="../img/nurse-icon.png" class="" style="max-width:45px; margin-bottom:0"/> <span>NurseHolding</span></a>
+    <a class="navbar-brand" href="<?= $this->Url->build('/') ?>"><img src="../img/nurse-icon.png" class="" style="max-width:45px; margin-bottom:0"/> <span style="vertical-align:middle">NurseHolding</span></a>
 
     <!-- Toggle button for offcanvas -->
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
