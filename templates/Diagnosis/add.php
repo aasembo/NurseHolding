@@ -6,7 +6,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('List Diagnosis'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
@@ -16,13 +16,13 @@
         <div class="diagnosis form content">
             <?= $this->Form->create($diagnosi) ?>
             <fieldset>
-                <legend><?= __('Add Diagnosi') ?></legend>
+                <h1><?= __('Add Diagnosi') ?></h1>
                 <?php
                     echo $this->Form->control('exam_id', ['options' => $exams]);
                     echo $this->Form->control('diagnosis_text');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

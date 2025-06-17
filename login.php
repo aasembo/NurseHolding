@@ -5,7 +5,7 @@
  */
 ?>
 <div class="patients index content">
-    <?= $this->Html->link(__('New Patient'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New Patient'), ['action' => 'add'], ['class' => 'themebtn']) ?>
     <h3><?= __('Patients') ?></h3>
     <div class="table-responsive">
     <h2>Login</h2>

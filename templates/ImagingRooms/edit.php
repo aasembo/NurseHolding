@@ -20,14 +20,14 @@
         <div class="imagingRooms form content">
             <?= $this->Form->create($imagingRoom) ?>
             <fieldset>
-                <legend><?= __('Edit Imaging Room') ?></legend>
+                <h1><?= __('Edit Imaging Room') ?></h1>
                 <?php
                     echo $this->Form->control('room_name');
                     echo $this->Form->control('created_at', ['empty' => true]);
                     echo $this->Form->control('updated_at', ['empty' => true]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

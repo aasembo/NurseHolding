@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Care Assignment'), ['action' => 'edit', $careAssignment->id], ['class' => 'side-nav-item']) ?>
@@ -15,8 +15,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="careAssignments view content">
-            <h3><?= h($careAssignment->id) ?></h3>
+        <div class="careAssignments management_table">
+            <div class="table_heading">
+            <h1><?= h($careAssignment->id) ?></h1>
+            </div>
+            <div class="table-responsive">
             <table>
                 <tr>
                     <th><?= __('Nurse') ?></th>
@@ -35,8 +38,9 @@
                     <td><?= h($careAssignment->assigned_date) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Comments') ?></strong>
+            </div>
+            <div class="comment_quote">
+                <label><?= __('Comments') ?></label>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($careAssignment->comments)); ?>
                 </blockquote>

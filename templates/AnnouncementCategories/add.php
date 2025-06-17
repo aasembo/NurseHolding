@@ -16,14 +16,14 @@
         <div class="announcementCategories form content">
             <?= $this->Form->create($announcementCategory) ?>
             <fieldset>
-                <legend><?= __('Add Announcement Category') ?></legend>
+                <h1><?= __('Add Announcement Category') ?></h1>
                 <?php
                     echo $this->Form->control('announcement_id', ['options' => $announcements]);
                     echo $this->Form->control('category_name');
                     echo $this->Form->control('category_value');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

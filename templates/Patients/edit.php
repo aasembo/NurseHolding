@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
@@ -17,10 +17,10 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="patients form content">
+        <div class="patients table_form">
             <?= $this->Form->create($patient) ?>
             <fieldset>
-                <legend><?= __('Edit Patient') ?></legend>
+                <h1><?= __('Edit Patient') ?></h1>
                 <?php
                     echo $this->Form->control('FirstName');
                     echo $this->Form->control('LastName');
@@ -30,7 +30,7 @@
                     //echo $this->Form->control('sedations');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

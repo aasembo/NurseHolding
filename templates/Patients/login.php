@@ -4,8 +4,8 @@
  * @var iterable<\App\Model\Entity\Patient> $patients
  */
 ?>
-<div class="patients index content">
-    <?= $this->Html->link(__('Home page'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+<div class="patients index content login_box">
+    <?= $this->Html->link(__('Home page'), ['action' => 'add'], ['class' => 'themebtn']) ?>
     <h3><?= __('Users') ?></h3>
     <div class="table-responsive">
     <h2>Login</h2>

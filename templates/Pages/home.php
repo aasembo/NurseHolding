@@ -70,8 +70,10 @@ $controllers = [
 <body>
 <div class="container">
     <div class="controller_list">
-    <h1 class="app-title">🍰 Welcome to DCMC Nurse Holding Systemss</h1>
-        <?php 
+<h1 class="app-title">
+  <img src="../img/nurse-icon.png" class="" style="max-width:25px; margin-bottom:0"/>
+  Welcome to Nurse Holding System
+</h1>        <?php 
             $iconMap = [
                 'add' => 'fa fa-plus',
                 'edit' => 'fa fa-edit',

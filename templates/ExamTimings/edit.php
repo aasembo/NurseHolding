@@ -21,14 +21,14 @@
         <div class="examTimings form content">
             <?= $this->Form->create($examTiming) ?>
             <fieldset>
-                <legend><?= __('Edit Exam Timing') ?></legend>
+                <h1><?= __('Edit Exam Timing') ?></h1>
                 <?php
                     echo $this->Form->control('exam_id', ['options' => $exams]);
                     echo $this->Form->control('start_time');
                     echo $this->Form->control('end_time');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

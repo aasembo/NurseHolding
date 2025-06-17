@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Announcement'), ['action' => 'edit', $announcement->id], ['class' => 'side-nav-item']) ?>
@@ -33,7 +33,7 @@
                     <?= $this->Text->autoParagraph(h($announcement->content)); ?>
                 </blockquote>
             </div>
-            <div class="related">
+            <div class="">
                 <h4><?= __('Related Announcement Categories') ?></h4>
                 <?php if (!empty($announcement->announcement_categories)) : ?>
                 <div class="table-responsive">

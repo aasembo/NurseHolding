@@ -6,7 +6,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
@@ -21,14 +21,14 @@
         <div class="examStatusUpdates form content">
             <?= $this->Form->create($examStatusUpdate) ?>
             <fieldset>
-                <legend><?= __('Edit Exam Status Update') ?></legend>
+                <h1><?= __('Edit Exam Status Update') ?></h1>
                 <?php
                     echo $this->Form->control('exam_id', ['options' => $exams]);
                     echo $this->Form->control('event_type');
                     echo $this->Form->control('timestamp');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

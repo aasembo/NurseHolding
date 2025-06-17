@@ -20,7 +20,7 @@
         <div class="specialists form content">
             <?= $this->Form->create($specialist) ?>
             <fieldset>
-                <legend><?= __('Edit Specialist') ?></legend>
+                <h1><?= __('Edit Specialist') ?></h1>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('email');
@@ -28,7 +28,7 @@
                     echo $this->Form->control('specialty');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

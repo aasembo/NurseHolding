@@ -56,7 +56,7 @@ table td, table th{
                         <th><?= __('') ?></th>
                         <th><?= __('') ?></th>
                         <th style="background-color: #fff0d4;">
-                        <i class="fas fa-brain" style="color: #ff69b4; margin-left: 5px;"></i>
+                        <!-- <i class="fas fa-brain" style="color: #ff69b4; margin-left: 5px;"></i> -->
                         <?= __('Pedi Hussaini') ?>
                         </th>
                     </tr>
@@ -66,7 +66,7 @@ table td, table th{
                         <th><?= __('') ?></th>
                         <th><?= __('') ?></th>
                         <th style="background-color: #fff0d4;">
-                        <i class="fas fa-heart" style="color: #ff6771; margin-left: 5px;"></i>
+                        <!-- <i class="fas fa-heart" style="color: #ff6771; margin-left: 5px;"></i> -->
                         <?= __('Neuro Patel') ?> 
                     </th>
                     </tr>
@@ -251,11 +251,9 @@ table td, table th{
             </table>
                 </div>
             <!-- Pagination Controls -->
-            <div class="pagination">
-                <?php if ($this->Paginator->hasPage()): ?>
-                    <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total')) ?>
-                <?php endif; ?>
-
+            <div class="paginator">
+               
+  <ul class="pagination">
                 
                 <?php if ($this->Paginator->hasPage()): ?>
                     <?= $this->Paginator->numbers() ?>
@@ -264,11 +262,16 @@ table td, table th{
                     <span class="separator">|</span>
                 <?php endif; ?>     
                 <?php if ($this->Paginator->hasPrev()): ?>
-                    <?= $this->Paginator->prev('< ' . __('Previous')) ?>
+                    <?= $this->Paginator->prev('< ' . __('')) ?>
                 <?php endif; ?>
 
                 <?php if ($this->Paginator->hasNext()): ?>
-                    <?= $this->Paginator->next(__('Next') . ' >') ?>
+                    <?= $this->Paginator->next(__('') . ' >') ?>
+                <?php endif; ?>
+
+                </ul>
+                 <?php if ($this->Paginator->hasPage()): ?>
+                   <p> <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} records out of {{count}} total')) ?></p>
                 <?php endif; ?>
             </div>
         </div>

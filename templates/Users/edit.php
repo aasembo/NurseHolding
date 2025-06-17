@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
@@ -17,10 +17,10 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="users form content">
+        <div class="table_form">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __('Edit User') ?></legend>
+                <h1><?= __('Edit User') ?></h1>
                 <?php
                     echo $this->Form->control('username');
                     echo $this->Form->control('password');
@@ -30,7 +30,7 @@
                     echo $this->Form->control('updated_at');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn'], ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

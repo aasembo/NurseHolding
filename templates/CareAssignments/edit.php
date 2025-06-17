@@ -7,7 +7,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
@@ -19,10 +19,10 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="careAssignments form content">
+        <div class="careAssignments table_form">
             <?= $this->Form->create($careAssignment) ?>
             <fieldset>
-                <legend><?= __('Edit Care Assignment') ?></legend>
+                <h1><?= __('Edit Care Assignment') ?></h1>
                 <?php
                     echo $this->Form->control('nurse_id', ['options' => $nurses]);
                     echo $this->Form->control('patient_id', ['options' => $patients]);
@@ -30,7 +30,7 @@
                     echo $this->Form->control('comments');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

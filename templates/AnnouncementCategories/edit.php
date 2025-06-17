@@ -6,7 +6,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
@@ -21,14 +21,14 @@
         <div class="announcementCategories form content">
             <?= $this->Form->create($announcementCategory) ?>
             <fieldset>
-                <legend><?= __('Edit Announcement Category') ?></legend>
+                <h1><?= __('Edit Announcement Category') ?></h1>
                 <?php
                     echo $this->Form->control('announcement_id', ['options' => $announcements]);
                     echo $this->Form->control('category_name');
                     echo $this->Form->control('category_value');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

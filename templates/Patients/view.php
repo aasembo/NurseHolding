@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Patient'), ['action' => 'edit', $patient->id], ['class' => 'side-nav-item']) ?>
@@ -15,8 +15,12 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="patients view content">
-            <h3><?= h($patient->FirstName) ?></h3>
+        <div class="patients management_table">
+                                    <div class="table_heading">
+
+            <h1><?= h($patient->FirstName) ?></h1>
+            </div>
+                        <div class="table-responsive">
             <table>
                 <tr>
                     <th><?= __('FirstName') ?></th>
@@ -43,11 +47,17 @@
                     <td><?= $patient->age === null ? '' : $this->Number->format($patient->age) ?></td>
                 </tr>
             </table>
-            <div class="related">
-                <h4><?= __('Related Care Assignments') ?></h4>
+            </div>
+            <div class="">
+                                        <div class="table_heading">
+
+                <h1><?= __('Related Care Assignments') ?></h1>
+                </div>
                 <?php if (!empty($patient->care_assignments)) : ?>
                 <div class="table-responsive">
                     <table>
+                                                <thead class="thead-dark">
+
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Nurse Id') ?></th>
@@ -56,6 +66,7 @@
                             <th><?= __('Comments') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
+                        </thead>
                         <?php foreach ($patient->care_assignments as $careAssignment) : ?>
                         <tr>
                             <td><?= h($careAssignment->id) ?></td>
@@ -63,10 +74,10 @@
                             <td><?= h($careAssignment->patient_id) ?></td>
                             <td><?= h($careAssignment->assigned_date) ?></td>
                             <td><?= h($careAssignment->comments) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'CareAssignments', 'action' => 'view', $careAssignment->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'CareAssignments', 'action' => 'edit', $careAssignment->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'CareAssignments', 'action' => 'delete', $careAssignment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $careAssignment->id)]) ?>
+                            <td class="">
+                                <?= $this->Html->link(__(''), ['controller' => 'CareAssignments', 'action' => 'view', $careAssignment->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'CareAssignments', 'action' => 'edit', $careAssignment->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'CareAssignments', 'action' => 'delete', $careAssignment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $careAssignment->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -74,11 +85,15 @@
                 </div>
                 <?php endif; ?>
             </div>
-            <div class="related">
-                <h4><?= __('Related Exams') ?></h4>
+            <div class="">
+                                        <div class="table_heading">
+                <h1><?= __('Related Exams') ?></h1>
+                </div>
                 <?php if (!empty($patient->exams)) : ?>
                 <div class="table-responsive">
                     <table>
+                                                <thead class="thead-dark">
+
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Patient Id') ?></th>
@@ -93,6 +108,7 @@
                             <th><?= __('Specialist Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
+                        </thead>
                         <?php foreach ($patient->exams as $exam) : ?>
                         <tr>
                             <td><?= h($exam->id) ?></td>
@@ -106,10 +122,10 @@
                             <td><?= h($exam->imaging_room_id) ?></td>
                             <td><?= h($exam->technician_id) ?></td>
                             <td><?= h($exam->specialist_id) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Exams', 'action' => 'view', $exam->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Exams', 'action' => 'edit', $exam->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Exams', 'action' => 'delete', $exam->id], ['confirm' => __('Are you sure you want to delete # {0}?', $exam->id)]) ?>
+                            <td class="">
+                                <?= $this->Html->link(__(''), ['controller' => 'Exams', 'action' => 'view', $exam->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'Exams', 'action' => 'edit', $exam->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'Exams', 'action' => 'delete', $exam->id], ['confirm' => __('Are you sure you want to delete # {0}?', $exam->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -117,11 +133,15 @@
                 </div>
                 <?php endif; ?>
             </div>
-            <div class="related">
-                <h4><?= __('Related Nursing Intervention') ?></h4>
+            <div class="">
+                                        <div class="table_heading">
+                <h1><?= __('Related Nursing Intervention') ?></h1>
+                </div>
                 <?php if (!empty($patient->nursing_intervention)) : ?>
                 <div class="table-responsive">
                     <table>
+                                                <thead class="thead-dark">
+
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Patient Id') ?></th>
@@ -140,6 +160,7 @@
                             <th><?= __('Updated At') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
+                        </thead>
                         <?php foreach ($patient->nursing_intervention as $nursingIntervention) : ?>
                         <tr>
                             <td><?= h($nursingIntervention->id) ?></td>
@@ -158,9 +179,9 @@
                             <td><?= h($nursingIntervention->created_at) ?></td>
                             <td><?= h($nursingIntervention->updated_at) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'NursingIntervention', 'action' => 'view', $nursingIntervention->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'NursingIntervention', 'action' => 'edit', $nursingIntervention->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'NursingIntervention', 'action' => 'delete', $nursingIntervention->id], ['confirm' => __('Are you sure you want to delete # {0}?', $nursingIntervention->id)]) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'NursingIntervention', 'action' => 'view', $nursingIntervention->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'NursingIntervention', 'action' => 'edit', $nursingIntervention->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'NursingIntervention', 'action' => 'delete', $nursingIntervention->id], ['confirm' => __('Are you sure you want to delete # {0}?', $nursingIntervention->id),'class'=> 'bg-primary-light fa fa-trash' ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -168,11 +189,14 @@
                 </div>
                 <?php endif; ?>
             </div>
-            <div class="related">
-                <h4><?= __('Related Patient Visits') ?></h4>
+            <div class="">
+                                        <div class="table_heading">
+                <h1><?= __('Related Patient Visits') ?></h1>
+                </div>
                 <?php if (!empty($patient->patient_visits)) : ?>
                 <div class="table-responsive">
                     <table>
+                                                <thead class="thead-dark">
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Patient Id') ?></th>
@@ -180,16 +204,17 @@
                             <th><?= __('Visit Number') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
+                        </thead>
                         <?php foreach ($patient->patient_visits as $patientVisit) : ?>
                         <tr>
                             <td><?= h($patientVisit->id) ?></td>
                             <td><?= h($patientVisit->patient_id) ?></td>
                             <td><?= h($patientVisit->accession) ?></td>
                             <td><?= h($patientVisit->visit_number) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'PatientVisits', 'action' => 'view', $patientVisit->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'PatientVisits', 'action' => 'edit', $patientVisit->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'PatientVisits', 'action' => 'delete', $patientVisit->id], ['confirm' => __('Are you sure you want to delete # {0}?', $patientVisit->id)]) ?>
+                            <td class="">
+                                <?= $this->Html->link(__(''), ['controller' => 'PatientVisits', 'action' => 'view', $patientVisit->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'PatientVisits', 'action' => 'edit', $patientVisit->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'PatientVisits', 'action' => 'delete', $patientVisit->id], ['confirm' => __('Are you sure you want to delete # {0}?', $patientVisit->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

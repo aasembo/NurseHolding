@@ -15,13 +15,13 @@
         <div class="locations form content">
             <?= $this->Form->create($location) ?>
             <fieldset>
-                <legend><?= __('Add Location') ?></legend>
+                <h1><?= __('Add Location') ?></h1>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('description');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

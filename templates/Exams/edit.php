@@ -11,7 +11,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
@@ -23,10 +23,10 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="exams form content">
+        <div class="exams table_form">
             <?= $this->Form->create($exam) ?>
             <fieldset>
-                <legend><?= __('Edit Exam') ?></legend>
+                <h1><?= __('Edit Exam') ?></h1>
                 <?php
                     echo $this->Form->control('patient_id', ['options' => $patients, 'empty' => true]);
                     echo $this->Form->control('exam_type');
@@ -51,7 +51,7 @@
 
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

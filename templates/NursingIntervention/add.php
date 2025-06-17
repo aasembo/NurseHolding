@@ -16,7 +16,7 @@
         <div class="nursingIntervention form content">
             <?= $this->Form->create($nursingIntervention) ?>
             <fieldset>
-                <legend><?= __('Add Nursing Intervention') ?></legend>
+                <h1><?= __('Add Nursing Intervention') ?></h1>
                 <?php
                     echo $this->Form->control('patient_id', ['options' => $patients]);
                     echo $this->Form->control('intervention_date');
@@ -34,7 +34,7 @@
                     echo $this->Form->control('updated_at', ['empty' => true]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

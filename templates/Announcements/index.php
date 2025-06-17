@@ -4,12 +4,14 @@
  * @var iterable<\App\Model\Entity\Announcement> $announcements
  */
 ?>
-<div class="announcements index content">
-    <?= $this->Html->link(__('New Announcement'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Announcements') ?></h3>
+<div class="announcements management_table">
+        <div class="table_heading">
+        <h1><?= __('Announcements') ?></h1>
+    <?= $this->Html->link(__('New Announcement'), ['action' => 'add'], ['class' => 'themebtn']) ?>
+    </div>
     <div class="table-responsive">
         <table>
-            <thead>
+            <thead class="thead-dark">
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('created_at') ?></th>
@@ -33,11 +35,11 @@
     </div>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->first('<< ' . __('')) ?>
+            <?= $this->Paginator->prev('< ' . __('')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+            <?= $this->Paginator->next(__('') . ' >') ?>
+            <?= $this->Paginator->last(__('') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>

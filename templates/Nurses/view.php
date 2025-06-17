@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Nurse'), ['action' => 'edit', $nurse->id], ['class' => 'side-nav-item']) ?>
@@ -15,8 +15,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="nurses view content">
-            <h3><?= h($nurse->LastName) ?></h3>
+        <div class="management_table">
+                        <div class="table_heading">
+            <h1><?= h($nurse->LastName) ?></h1>
+            </div>
+            <div class="table-responsive">
             <table>
                 <tr>
                     <th><?= __('LastName') ?></th>
@@ -43,11 +46,15 @@
                     <td><?= $this->Number->format($nurse->id) ?></td>
                 </tr>
             </table>
-            <div class="related">
-                <h4><?= __('Related Care Assignments') ?></h4>
+            </div>
+            <div class="">
+                            <div class="table_heading">
+                <h1><?= __(' Care Assignments') ?></h1>
+                </div>
                 <?php if (!empty($nurse->care_assignments)) : ?>
                 <div class="table-responsive">
                     <table>
+                        <thead class="thead-dark">
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Nurse Id') ?></th>
@@ -56,6 +63,7 @@
                             <th><?= __('Comments') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
+                        </thead>
                         <?php foreach ($nurse->care_assignments as $careAssignment) : ?>
                         <tr>
                             <td><?= h($careAssignment->id) ?></td>
@@ -63,10 +71,10 @@
                             <td><?= h($careAssignment->patient_id) ?></td>
                             <td><?= h($careAssignment->assigned_date) ?></td>
                             <td><?= h($careAssignment->comments) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'CareAssignments', 'action' => 'view', $careAssignment->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'CareAssignments', 'action' => 'edit', $careAssignment->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'CareAssignments', 'action' => 'delete', $careAssignment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $careAssignment->id)]) ?>
+                            <td class="">
+                                <?= $this->Html->link(__(''), ['controller' => 'CareAssignments', 'action' => 'view', $careAssignment->id], ['class'=> 'bg-primary-light fa fa-eye']); ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'CareAssignments', 'action' => 'edit', $careAssignment->id], ['class'=> 'bg-primary-light fa fa-edit']); ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'CareAssignments', 'action' => 'delete', $careAssignment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $careAssignment->id), 'class' => 'bg-primary-light fa fa-trash']); ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

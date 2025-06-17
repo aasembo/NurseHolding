@@ -35,7 +35,7 @@
                     <td><?= h($imagingRoom->updated_at) ?></td>
                 </tr>
             </table>
-            <div class="related">
+            <div class="">
                 <h4><?= __('Related Exams') ?></h4>
                 <?php if (!empty($imagingRoom->exams)) : ?>
                 <div class="table-responsive">

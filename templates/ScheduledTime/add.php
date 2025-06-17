@@ -15,13 +15,13 @@
         <div class="scheduledTime form content">
             <?= $this->Form->create($scheduledTime) ?>
             <fieldset>
-                <legend><?= __('Add Scheduled Time') ?></legend>
+                <h1><?= __('Add Scheduled Time') ?></h1>
                 <?php
                     echo $this->Form->control('start_time');
                     echo $this->Form->control('end_time');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

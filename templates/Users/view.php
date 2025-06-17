@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
@@ -15,8 +15,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="users view content">
-            <h3><?= h($user->username) ?></h3>
+        <div class="management_table">
+            <div class="table_heading">
+            <h1><?= h($user->username) ?></h1>
+            </div>
+                <div class="table-responsive">
             <table>
                 <tr>
                     <th><?= __('Username') ?></th>
@@ -43,6 +46,7 @@
                     <td><?= h($user->updated_at) ?></td>
                 </tr>
             </table>
+            </div>
         </div>
     </div>
 </div>

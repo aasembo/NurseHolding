@@ -5,17 +5,17 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item fa fa-user']) ?>
         </div>
     </aside>
     <div class="column column-80">
-        <div class="users form content">
+        <div class="table_form">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __('Add User') ?></legend>
+                <h1><?= __('Add User') ?></h1>
                 <?php
                     echo $this->Form->control('username');
                     echo $this->Form->control('password');
@@ -25,7 +25,7 @@
                     echo $this->Form->control('updated_at');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn'], ['class' => 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

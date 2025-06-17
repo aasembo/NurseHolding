@@ -16,7 +16,7 @@
         <div class="patientLogs form content">
             <?= $this->Form->create($patientLog) ?>
             <fieldset>
-                <legend><?= __('Add Patient Log') ?></legend>
+                <h1><?= __('Add Patient Log') ?></h1>
                 <?php
                     echo $this->Form->control('reviewed_by');
                     echo $this->Form->control('called_by');
@@ -24,7 +24,7 @@
                     echo $this->Form->control('exam_id', ['options' => $exams]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

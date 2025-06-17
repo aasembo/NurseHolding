@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Patient Visit'), ['action' => 'edit', $patientVisit->id], ['class' => 'side-nav-item']) ?>
@@ -15,8 +15,8 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="patientVisits view content">
-            <h3><?= h($patientVisit->id) ?></h3>
+        <div class="patientVisits table_form">
+            <h1><?= h($patientVisit->id) ?></h1>
             <table>
                 <tr>
                     <th><?= __('Patient') ?></th>

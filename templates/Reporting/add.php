@@ -16,7 +16,7 @@
         <div class="reporting form content">
             <?= $this->Form->create($reporting) ?>
             <fieldset>
-                <legend><?= __('Add Reporting') ?></legend>
+                <h1><?= __('Add Reporting') ?></h1>
                 <?php
                     echo $this->Form->control('exam_id', ['options' => $exams]);
                     echo $this->Form->control('report_content');
@@ -24,7 +24,7 @@
                     echo $this->Form->control('updated_at', ['empty' => true]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
