@@ -187,47 +187,6 @@ public function update($tableName = null, $id = null){
         } else {
             $value = $data['value'];
         }
-        if($value === null && in_array($data['column'], ['ScheduledTime', 'start_time', 'end_time'])) {
-            throw new \InvalidArgumentException('Invalid value for ' . $data['column']);
-        }
-        // add validation for out of range values
-        if (in_array($data['column'], ['ScheduledTime', 'start_time', 'end_time'])) {
-            // Validate input format strictly: n/j/y, g:i A
-            $pattern = '/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{2},\s(0?[1-9]|1[0-2]):([0-5][0-9])\s(AM|PM)$/i';
-            // if (!preg_match($pattern, $data['value'])) {
-            // throw new \InvalidArgumentException('Invalid date/time format. Use M/D/YY, h:mm AM/PM');
-            // }
-
-            // Parse date
-            $date = DateTimeImmutable::createFromFormat('n/j/y, g:i A', $data['value']);
-            $errors = DateTimeImmutable::getLastErrors();
-            if (!$date || $errors['warning_count'] > 0 || $errors['error_count'] > 0) {
-            throw new \InvalidArgumentException('Invalid date/time value.');
-            }
-
-            // Range check: year, month, day, hour, minute
-            $year = (int)$date->format('Y');
-            $month = (int)$date->format('n');
-            $day = (int)$date->format('j');
-            $hour = (int)$date->format('G'); // 0-23
-            $minute = (int)$date->format('i');
-
-            if ($year < 2000 || $year > 2030) {
-            throw new \InvalidArgumentException('Year must be between 2000 and 2030.');
-            }
-            if ($month < 1 || $month > 12) {
-            throw new \InvalidArgumentException('Month must be between 1 and 12.');
-            }
-            if ($day < 1 || $day > 31) {
-            throw new \InvalidArgumentException('Day must be between 1 and 31.');
-            }
-            if ($hour < 0 || $hour > 23) {
-            throw new \InvalidArgumentException('Hour must be between 1 and 12 (AM/PM).');
-            }
-            if ($minute < 0 || $minute > 59) {
-            throw new \InvalidArgumentException('Minute must be between 0 and 59.');
-            }
-        }
 
         if ($tableName === "Nurses" && $data['column'] === 'FirstName') {
             $fullName = trim($data['value']);

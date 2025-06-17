@@ -46,7 +46,6 @@ table td, table th{
                 <th style="background-color: #fff0d4;"><?= __('Date') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('12/2/2025') ?></th>
                 <th style="background-color: #fff0d4;"><?= __('') ?></th>
-                        
                     </tr>
                 <tr> <!-- Purple row -->  
                        <th style="background-color: #fff0d4;"><?= __('Charge 1') ?></th>
@@ -70,7 +69,6 @@ table td, table th{
                         <i class="fas fa-heart" style="color: #ff6771; margin-left: 5px;"></i>
                         <?= __('Neuro Patel') ?> 
                     </th>
-
                     </tr>
 
                     
@@ -114,23 +112,25 @@ table td, table th{
 <?php //endif; */?> 
 
                 <tbody>
-                <?php //debug($patient);?>
+                <?php if($patients){?>
                     <?php foreach ($patients as $patient) :  ?>
                         <?php //debug($patients);?>
                         <?php //debug(/$patients->diagnosis[2]);?>
                         <tr data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
                         <?php //debug($patients);?>
                             <td data-table-name="patients" data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
-                                    <?php foreach ($patient->exams as $exam): ?> 
-                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $exam->scheduled_time->id ? : 'null' ?>)">
+                                <?php if (!empty($exam->scheduled_time)): ?>
+                                    <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $exam->scheduled_time->id ?>)">
                                         <?= h($exam->scheduled_time->ScheduledTime) ?>
-                                        </span>
-                                        <?php //debug($patient);?>
-                                        <?php //debug($exam);?>
-                                    <?php endforeach; ?>
-                                </td>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="text-muted" onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', null)">
+                                        (No Scheduled Time)
+                                    </span>
+                                <?php endif; ?>
+                            </td>
                             <td >
-                                
+                                <ul>
                                     <?php foreach ($patient->care_assignments as $care_assignments): ?>
                                         <span onclick="makeCellEditable(this, 'Nurses', 'FirstName', <?= $care_assignments->nurse->id ? : 'null' ?>)">
                                         <?= h($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName)  ?>
@@ -138,7 +138,7 @@ table td, table th{
                                         <?php //debug($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName); ?>
 
                                     <?php endforeach; ?>
-                               
+                                </ul>
 
 
 
@@ -152,10 +152,31 @@ table td, table th{
                             <td onclick="makeCellEditable(this, 'Patients', 'gender', <?= $patient->id? : 'null' ?>)"><?= h($patient->gender) ?></td>
                             <td><?= h($patient->medical_record_number) ?></td>
                             <?php //debug($patient);?>
-                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number ? : 'null' ?>)"><?= h($patient->diagnosi) ? h($patient->diagnosi->diagnosis_text) : 'N/A' ?></td>
+                            <td onclick="makeCellEditable(this, 'Diagnosis', 'diagnosis_text', <?= $patient->medical_record_number ? : 'null' ?>)">
+                                <?php
+                                    $diagnosisText = 'N/A';
+
+                                    if (!empty($exam) && !empty($exam->diagnosis) && isset($exam->diagnosis[0]->diagnosis_text)) {
+                                        $diagnosisText = h($exam->diagnosis[0]->diagnosis_text);
+                                    }
+                                    ?>
+
+                                    <?= $diagnosisText ?>
+                                
+                            </td>
                            
                             
-                            <td onclick="makeCellEditable(this, 'imaging_room', 'room_name',<?= $patient->id? : 'null' ?>)"><?= isset($patient->imaging_room) ? h($patient->imaging_room->room_name) : 'N/A' ?><?= h($patient->imaging_room) ?></td>
+                            <td onclick="makeCellEditable(this, 'imaging_room', 'room_name',<?= $patient->id? : 'null' ?>)">
+                                <?php
+                                    $roomName = 'N/A';
+
+                                    if (!empty($exam) && isset($exam['imaging_room']['room_name'])) {
+                                        $roomName = h($exam['imaging_room']['room_name']);
+                                    }
+                                    ?>
+
+                                    <?= $roomName ?>
+                            </td>
                             <td>
                                 
                                     <?php foreach ($patient->exams as $exam): ?>
@@ -187,39 +208,48 @@ table td, table th{
                             <td><input type="checkbox" <?= $patient->monitoring ? 'checked' : '' ?>></td>
                             <td><input type="checkbox" <?= $patient->meds ? 'checked' : '' ?>></td>
                             <td><?= h($patient->medication_details) ?></td>
-                            <td><?= h($patient->comments) ?></td>
+                            <?php
+                                $comments = 'N/A';
+
+                                if (!empty($exam['patient_logs']) && isset($exam['patient_logs'][0]['comments'])) {
+                                    $comments = h($exam['patient_logs'][0]['comments']);
+                                }
+                            ?>
+                            <td><?= $comments ?></td>
                             <td><?= h($patient->OrderReviewedBy) ?></td>
                             <td><?= h($patient->PatientCalledBy) ?></td>
                             <td><?= h($patient->arrival_time) ?></td>
                             <td><?= h($patient->holding_time) ?></td>
                             <td data-name="start_time" data-patient-id="<?= $patient->id ?>">
                             <ul>
-                                    <?php foreach ($patient->exams as $exam): ?> 
-                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'start_time', <?= $exam->scheduled_time->id ? : 'null' ?>)">
-                                        <?= h($exam->scheduled_time->start_time) ?>
-                                    </span>
-                                        <?php //debug($patients);?>
-                                        <?php //debug($exam);?>
-                                    <?php endforeach; ?>
+                                    <?php if (!empty($exam->scheduled_time)): ?>
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'start_time', <?= $exam->scheduled_time->id ?>)">
+                                            <?= h($exam->scheduled_time->start_time) ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-muted" onclick="makeCellEditable(this, 'scheduled_time', 'start_time', null)">
+                                            (No Start Time)
+                                        </span>
+                                    <?php endif; ?>
                                 </ul>
                             </td>
-                             <td data-name="end_time" data-patient-id="<?= $patient->id ?>">
-                             <ul>
-                                    <?php foreach ($patient->exams as $exam): ?> 
-                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'end_time', <?= $exam->scheduled_time->id ? : 'null' ?>)">
-                                        <?= h($exam->scheduled_time->end_time) ?>
-                                    </span>
-                                        <?php //debug($patients);?>
-                                        <?php //debug($exam);?>
-                                    <?php endforeach; ?>
-                                </ul>
+                            <td data-name="end_time" data-patient-id="<?= $patient->id ?>">
+                                    <?php if (!empty($exam->scheduled_time)): ?>
+                                        <span onclick="makeCellEditable(this, 'scheduled_time', 'end_time', <?= $exam->scheduled_time->id ?>)">
+                                            <?= h($exam->scheduled_time->end_time) ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-muted">(No End Time)</span>
+                                    <?php endif; ?>
+                            </td>
                             <td><?= h($patient->dc_time) ?></td>
                             <td><?= h($patient->dc_location) ?></td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach; 
+                    }?>
                 </tbody>
             </table>
-                                    </div>
+                </div>
             <!-- Pagination Controls -->
         </div>
     </div>
@@ -228,10 +258,12 @@ table td, table th{
 
 <h3>Nurses</h3>
 <ul>
-<?php foreach ($patient->care_assignments as $care_assignments): ?>
+<?php 
+if(isset($patient) && $patient->care_assignments){
+foreach ($patient->care_assignments as $care_assignments): ?>
  <li><?= h($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName)  ?></li>
  <?php //debug($care_assignments->nurse->LastName . ' ' . $care_assignments->nurse->FirstName); ?>
- <?php endforeach; ?>
+ <?php endforeach; }?>
 </ul>
 </ul>
 
