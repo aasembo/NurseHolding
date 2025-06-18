@@ -119,16 +119,13 @@ table td, table th{
                         <tr data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
                         <?php //debug($patients);?>
                             <td data-table-name="patients" data-timing-id="<?= $patient->timing ? $patient->timing->id : '' ?>">
-                                <?php
-                                    $firstExam = !empty($patient->exams) ? $patient->exams[0] : null;
-                                    if (!empty($firstExam) && !empty($firstExam->scheduled_time)):
-                                ?>
-                                    <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $firstExam->scheduled_time->id ?>)">
-                                        <?= h($firstExam->scheduled_time->ScheduledTime) ?>
+                                <?php if (!empty($exam->scheduled_time)): ?>
+                                    <span onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', <?= $exam->scheduled_time->id ?>)">
+                                        <?= h($exam->scheduled_time->ScheduledTime) ?>
                                     </span>
                                 <?php else: ?>
                                     <span class="text-muted" onclick="makeCellEditable(this, 'scheduled_time', 'ScheduledTime', null)">
-                                        <?= h("(No Scheduled Time)") ?>
+                                        (No Scheduled Time)
                                     </span>
                                 <?php endif; ?>
                             </td>
@@ -169,21 +166,16 @@ table td, table th{
                             </td>
                            
                             
-                            <td >
+                            <td onclick="makeCellEditable(this, 'imaging_rooms', 'room_name',<?= $exam['imaging_room']['id']? : 'null' ?>)">
                                 <?php
-                                    $roomName = (!empty($firstExam) && !empty($firstExam->imaging_room)) ? $firstExam->imaging_room->room_name : 'N/A';
-                                    $roomid = (!empty($firstExam) && !empty($firstExam->imaging_room)) ? $firstExam->imaging_room->id : null;
+                                    $roomName = 'N/A';
 
-                                    if (!empty($firstExam) && isset($firstExam->imaging_room->room_name)) {
-                                        $roomName = h($firstExam->imaging_room->room_name);
-                                    }
-                                    if (!empty($firstExam) && isset($firstExam->imaging_room->id)) {
-                                        $roomid = h($firstExam->imaging_room->id);
+                                    if (!empty($exam) && isset($exam['imaging_room']['room_name'])) {
+                                        $roomName = h($exam['imaging_room']['room_name']);
                                     }
                                     ?>
-                                    <span  onclick="makeCellEditable(this, 'imaging_rooms', 'room_name', <?= $roomid ?? null ?>)">
-                                        <?= $roomName ?>
-                                    </span>
+
+                                    <?= $roomName ?>
                             </td>
                             <td>
                                 

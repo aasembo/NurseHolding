@@ -125,7 +125,6 @@ class PatientsController extends AppController
     ]);
 
     $patients = $this->paginate($query);
-    // dd($patients);
     //debug($query);
     $this->set(compact('patients')); // Pass data to the view
     //debug($patients);
@@ -160,7 +159,7 @@ public function update($tableName = null, $id = null){
         }
 
         // Security: Only allow certain tables to be modified
-        $allowedTables = ['Patients', 'Diagnosis','RelatedTable','imaging_rooms','Nurses','scheduled_time', 'ImagingRooms']; // Add your allowed tables
+        $allowedTables = ['Patients', 'Diagnosis','RelatedTable','imaging_rooms','Nurses','scheduled_time']; // Add your allowed tables
         if (!in_array($tableName, $allowedTables)) {
             throw new \InvalidArgumentException('Unauthorized table access');
         }

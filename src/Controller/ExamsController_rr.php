@@ -226,95 +226,58 @@ class ExamsController extends AppController {
             $pdf = $parser->parseFile($filePath);
             $text = $pdf->getText();
 
-            //$this->log( 'Failed to save patient: ' .$text, 'error' );
-
-
-            // ✅ Split each block using date + time as a pattern (e.g., "06/16/2025      7:00 AM")
-            $blocks = preg_split('/(?=\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s*[AP]M)/', $text);
+            // Split into entries based on scheduling datetime (e.g., "06/16/2025 7:00 AM")
+            $blocks = preg_split('/(?=\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s+[AP]M)/', $text);
             $entries = [];
-
             foreach ($blocks as $block) {
-                if (trim($block) === '') continue;
-
-                $entry = [];
-                //$this->log( 'Failed to save patient: ' .$block, 'error' );
-                // DOB
-                if (preg_match('/DOB:\s*(\d{2}\/\d{2}\/\d{4})/', $block, $m)) {
-                    $entry['dob'] = date('Y-m-d', strtotime($m[1]));
+                // Skip empty
+                if (trim($block) === '') {
+                    continue;
                 }
 
-                // MRN
+                $entry = [];
+
+                // Match DOB
+                if (preg_match('/DOB:\s*(\d{2}\/\d{2}\/\d{4})/', $block, $m)) {
+                    $entry['dob'] = $m[1];
+                }
+
+                // Match MRN
                 if (preg_match('/MRN:\s*(\d+)/', $block, $m)) {
                     $entry['mrn'] = $m[1];
                 }
 
-                // Gender
+                // Match Gender
                 if (preg_match('/GENDER:\s*(Male|Female)/i', $block, $m)) {
                     $entry['gender'] = ucfirst(strtolower($m[1]));
                 }
 
-                // Acct # + patient name
-                if (preg_match('/Acct\s*#?:\s*(\d+)/i', $block, $m)) {
-                    $entry['acct'] = trim($m[1]);
+                // Match Acct #
+                if (preg_match('/Acct\s+#:\s*(\d+)/', $block, $m)) {
+                    $entry['acct'] = $m[1];
                 }
 
-                 // Patient name (from "patient:" line)
-                // if (preg_match('/\bpatient:\s*([^\r\n]+)/i', $block, $m)) {
-                //     $entry['patient_name'] = trim($m[1]);
-                // }
-
-                if( preg_match_all('/\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s+[AP]M\s+([A-Za-z\s]+?)\s+MRI/', $block, $matches)){
-
-                            $entry['patient_name'] = $matches[1][0] ?? null;
+                // Match Sedation procedure
+                if (preg_match('/MRI\s+Sedation/i', $block)) {
+                    $entry['sedation'] = true;
+                } else {
+                    $entry['sedation'] = false;
                 }
 
-                // Room (extracts the number after "MRI Room")
-                if (preg_match('/MRI.*?(?=\d)/', $block, $m)) {
+                // Match SCH
+                if (preg_match('/SCH:\s*([\d\/]+\s+\d{2}:\d{2}\s+[AP]M)/', $block, $m)) {
+                    $entry['scheduled_at'] = $m[1];
+                }
+
+                // Match Room (e.g., MRI Room 1 ...)
+                if (preg_match('/(MRI Room.*?)(?:\n|$)/i', $block, $m)) {
                     $entry['room'] = trim($m[1]);
                 }
-
-                // Sedation detection
-                $entry['sedation'] = stripos($block, 'Sedation') !== false;
-
-                // SCH Date and Time (e.g., SCH: 04/23/2025 02:50 PM)
-                // Try to match SCH: followed by a date/time on the same or next line
-                // Try to match SCH: followed by a date/time on the same or next line
-                $rawDatetime = null;
-                // Try to match SCH: followed by a date/time on the same line
-                if (preg_match('/SCH:\s*([0-9]{2}\/[0-9]{2}\/[0-9]{4}\s+\d{1,2}:\d{2}\s*[AP]M)/i', $block, $m)) {
-                    $rawDatetime = trim($m[1]);
-                } 
-                // Try to match SCH: at end of line, and date/time on the next line
-                elseif (preg_match('/SCH:\s*$/mi', $block) && preg_match('/^\s*([0-9]{2}\/[0-9]{2}\/[0-9]{4}\s+\d{1,2}:\d{2}\s*[AP]M)/mi', $block, $m2)) {
-                    $rawDatetime = trim($m2[1]);
-                }
-                if($rawDatetime){
-                    // $rawDatetime = trim($m[1]);
-                    if (!empty($rawDatetime)) {
-                        // Remove extra spaces between date and time
-                        $rawDatetime = preg_replace('/\s+/', ' ', $rawDatetime);
-                        $rawDatetime = trim($rawDatetime);
-                        $this->log("Raw SCH datetime (normalized): " . $rawDatetime, 'error');
-                        $convertedDatetime = $this->changeDateFormat($rawDatetime);
-                        if ($convertedDatetime !== null) {
-                            $entry['scheduled_at'] = $convertedDatetime;
-                        } else {
-                            // Try fallback: if the date is already in Y-m-d H:i:s, just use it
-                            if ($rawDatetime) {
-                                $entry['scheduled_at'] = $rawDatetime;
-                            } else {
-                                $this->log("Invalid datetime format: " . $rawDatetime, 'error');
-                            }
-                        }
-                    }
-                    $this->log("Invalid datetime format: " . $entry['scheduled_at'], 'error');
-                }
-
-                if (!empty($entry['mrn'])) {
+                if (array_key_exists('mrn', $entry)) {
                     $entries[] = $entry;
                 }
+                
             }
-
 
             $imported = 0;
             $skipped = 0;
@@ -333,27 +296,18 @@ class ExamsController extends AppController {
             $imagingRoomsTable = TableRegistry::getTableLocator()->get( 'ImagingRooms' );
 
             foreach ($entries as $entry) {
-                $this->log( 'Failed to save patient visit: ' . json_encode( $entry ), 'error' );
+
                 $medicalRecordNumber = $entry['mrn'];
                 // ===  ===  ===  = PATIENT HANDLING ===  ===  ===  =
                 $patient = $patientsTable->find()
                 ->where(['medical_record_number' => $medicalRecordNumber])
                 ->first();
-                // Calculate age from DOB if available
                 $age = 1;
-                if (!empty($entry['dob'])) {
-                    $dob = new \DateTime($entry['dob']);
-                    $now = new \DateTime();
-                    $age = $dob->diff($now)->y;
-                }
                 if ( !$patient ) {
-                    $nameParts = explode(' ', $entry['patient_name'], 2);
-                    $firstName = $nameParts[0] ?? null;
-                    $lastName = $nameParts[1] ?? null;
                     $patientData = [
                         'medical_record_number' => $medicalRecordNumber,
-                        'FirstName' => $firstName ?? null,
-                        'LastName' => $lastName ?? null,
+                        'FirstName' => "FirstName",
+                        'LastName' => "LastName",
                         'gender' =>  $entry['gender'],
                         'age' => $age,
                     ];
@@ -382,47 +336,6 @@ class ExamsController extends AppController {
                     }
                 }
 
-                   // ========== SCHEDULED TIME HANDLING ==========
-                $scheduledTimeId = null;
-                if(isset($entry['scheduled_at'])){
-                
-                    $startTime = date('Y-m-d H:i:s');
-                    $endTime = date('Y-m-d H:i:s');
-                    $scheduled_Time = $entry['scheduled_at']; 
-                   
-                    // Prefer 'scheduled_time' as the main field, fallback to 'ScheduledTime'
-                    $ScheduledTdata = [
-                        'scheduled_time' => $scheduled_Time,
-                        'start_time' => $startTime,
-                        'end_time' => $endTime,
-                    ];
-                    // Remove duplicate/conflicting keys
-                    $scheduledTime = $scheduledTimeTable->newEntity($ScheduledTdata);
-
-                    $this->log("Saving scheduled time: " . json_encode($ScheduledTdata), 'error');
-                    
-                    if (!$scheduledTimeTable->save($scheduledTime)) {
-                        $this->log("Failed to save scheduled time: " . json_encode($scheduledTime->getErrors()), 'error');
-                    } else {
-                        $scheduledTimeId = $scheduledTime->id;
-                        $this->log("Scheduled time saved with ID: " . $scheduledTimeId, 'error');
-                        // Load the appropriate table
-                        $table = $this->fetchTable('scheduled_time');
-                        
-                        // Get the record
-                        $record = $table->get($scheduledTimeId);
-                        $record = $table->patchEntity($record, [
-                            'ScheduledTime' => $scheduled_Time
-                        ]);
-                        if ($table->save($record)) {
-                            $this->log("Updated ScheduledTime for ID {$scheduledTimeId}", 'error');
-                        } else {
-                            $this->log("Failed to update ScheduledTime : " . json_encode($record->getErrors()), 'error');
-                        }
-                    }
-                 
-                }
-
                 if(isset($entry['room'])){
                     $imagingRoom = $imagingRoomsTable->find()
                         ->where( [ 'room_name' => $entry['room'] ] )
@@ -440,10 +353,76 @@ class ExamsController extends AppController {
                         $this->log( 'Imaging Room created: ' . $imagingRoom->room_name, 'debug' );
                     }
 
+                    if(isset($entry['scheduled_at'])){
+                        $startTime = (new DateTime())->format('Y-m-d H:i:s');
+                        $endTime = (new DateTime())->format('Y-m-d H:i:s');
+                        $scheduled_Time = $entry['scheduled_at'];
+                        // Convert to database format
+                        if ($startTime) {
+                            $startTime = $this->changeDateFormat($startTime);
+                        }
+                        if ($endTime) {
+                            $endTime = $this->changeDateFormat($endTime);
+                        }
+                        if ($scheduled_Time) {
+                            $scheduled_Time = $this->changeDateFormat($scheduled_Time);
+                        }
+
+                        $this->log("Saving scheduled time----->: ".$scheduled_Time, 'error');
+
+                        
+                        if ($startTime && $endTime) {
+                            // Only save if scheduled_Time, startTime, and endTime are valid (not '0000-00-00 00:00:00' or empty)
+                            $validTimes = [$scheduled_Time, $startTime, $endTime];
+                            $hasInvalid = false;
+                            foreach ($validTimes as $t) {
+                                if (empty($t) || $t === '0000-00-00 00:00:00') {
+                                    $hasInvalid = true;
+                                    break;
+                                }
+                            }
+                            if ($hasInvalid) {
+                                $this->log("Skipped saving scheduled time due to invalid date/time value.", 'error');
+                            } else {
+                                // Prefer 'scheduled_time' as the main field, fallback to 'ScheduledTime'
+                                $ScheduledTdata = [
+                                    'scheduled_time' => $scheduled_Time,
+                                    'start_time' => $startTime,
+                                    'end_time' => $endTime,
+                                ];
+                                // Remove duplicate/conflicting keys
+                                $scheduledTime = $scheduledTimeTable->newEntity($ScheduledTdata);
+
+                                $this->log("Saving scheduled time: " . json_encode($ScheduledTdata), 'error');
+                                
+                                if (!$scheduledTimeTable->save($scheduledTime)) {
+                                    $this->log("Failed to save scheduled time: " . json_encode($scheduledTime->getErrors()), 'error');
+                                } else {
+                                    $scheduledTimeId = $scheduledTime->id;
+                                    $this->log("Scheduled time saved with ID: " . $scheduledTimeId, 'error');
+                                    // Load the appropriate table
+                                    $table = $this->fetchTable('scheduled_time');
+                                    
+                                    // Get the record
+                                    $record = $table->get($scheduledTimeId);
+                                    $record = $table->patchEntity($record, [
+                                        'ScheduledTime' => $scheduled_Time
+                                    ]);
+                                    if ($table->save($record)) {
+                                        $this->log("Updated ScheduledTime for ID {$scheduledTimeId}", 'error');
+                                    } else {
+                                        $this->log("Failed to update ScheduledTime : " . json_encode($record->getErrors()), 'error');
+                                    }
+                                }
+                            }
+                
+                        }
+                    }
+
                     if($imagingRoom){
                         $examData = [
                             'patient_id' => $patient->id,
-                            'scheduled_time_id'=> $scheduledTimeId,
+                            'scheduled_time_id'=> $scheduledTimeId ? $scheduledTimeId : null,
                             'imaging_room_id' => $imagingRoom ? $imagingRoom->id : null,
                             'exam_type' => 'Pending',
                             'status' => 'Pending',
@@ -454,6 +433,7 @@ class ExamsController extends AppController {
                         if ( !$examsTable->save( $exam ) ) {
                             $this->log( 'Failed to save exam: ' . json_encode( $exam->getErrors() ), 'error' );
                         }
+                        
                     }
                 }
 
@@ -837,11 +817,10 @@ class ExamsController extends AppController {
             return null;
         }
 
-        $formats = [
-            'n/j/Y g:i A',   // 6/16/2025 7:00 AM
-            'n/j/y G:i',     // 1/18/25 10:09
-            'n/j/y H:i',     // just in case
-            'm-d-y G:i',     // 01-08-25 14:29
+         $formats = [
+            'n/j/y G:i',  // 1/18/25 10:09
+            'n/j/y H:i',  // just in case
+            'm-d-y G:i',  // 01-08-25 14:29
             'm-d-y H:i',
             'm/d/y G:i',
             'm/d/y H:i',
