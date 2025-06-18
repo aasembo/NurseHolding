@@ -237,7 +237,7 @@ class ExamsController extends AppController {
                 if (trim($block) === '') continue;
 
                 $entry = [];
-                $this->log( 'Failed to save patient: ' .$block, 'error' );
+                //$this->log( 'Failed to save patient: ' .$block, 'error' );
                 // DOB
                 if (preg_match('/DOB:\s*(\d{2}\/\d{2}\/\d{4})/', $block, $m)) {
                     $entry['dob'] = date('Y-m-d', strtotime($m[1]));
@@ -269,9 +269,12 @@ class ExamsController extends AppController {
                 }
 
                 // Room (extracts the number after "MRI Room")
-                if (preg_match('/(MRI.*?)(?=\d)/', $block, $m)) {
-                    $entry['room'] = trim($m[1]);
-                    echo $entry['room']; // Output: "MRI Suite A"
+                // if (preg_match('/(MRI.*?)(?=\d)/', $block, $m)) {
+                //     $entry['room'] = trim($m[1]);
+                // }
+
+                if (preg_match('/(MRI.*?)(?=\()/i', $block, $match)) {
+                    $entry['room'] = trim($match[1]);
                 }
 
                 // Sedation detection
@@ -295,7 +298,7 @@ class ExamsController extends AppController {
                         // Remove extra spaces between date and time
                         $rawDatetime = preg_replace('/\s+/', ' ', $rawDatetime);
                         $rawDatetime = trim($rawDatetime);
-                        $this->log("Raw SCH datetime (normalized): " . $rawDatetime, 'error');
+                        //$this->log("Raw SCH datetime (normalized): " . $rawDatetime, 'error');
                         $convertedDatetime = $this->changeDateFormat($rawDatetime);
                         if ($convertedDatetime !== null) {
                             $entry['scheduled_at'] = $convertedDatetime;
@@ -334,7 +337,7 @@ class ExamsController extends AppController {
             $imagingRoomsTable = TableRegistry::getTableLocator()->get( 'ImagingRooms' );
 
             foreach ($entries as $entry) {
-                $this->log( 'Failed to save patient visit: ' . json_encode( $entry ), 'error' );
+                //$this->log( 'Failed to save patient visit: ' . json_encode( $entry ), 'error' );
                 $medicalRecordNumber = $entry['mrn'];
                 // ===  ===  ===  = PATIENT HANDLING ===  ===  ===  =
                 $patient = $patientsTable->find()
