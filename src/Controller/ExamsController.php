@@ -269,7 +269,7 @@ class ExamsController extends AppController {
                 }
 
                 // Room (extracts the number after "MRI Room")
-                if (preg_match('/MRI.*?(?=\d)/', $block, $m)) {
+                if (preg_match('/MRI Room\s*(\d+)/i', $block, $m)) {
                     $entry['room'] = trim($m[1]);
                 }
 
