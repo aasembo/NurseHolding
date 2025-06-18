@@ -237,7 +237,7 @@ class ExamsController extends AppController {
                 if (trim($block) === '') continue;
 
                 $entry = [];
-                //$this->log( 'Failed to save patient: ' .$block, 'error' );
+                $this->log( 'Failed to save patient: ' .$block, 'error' );
                 // DOB
                 if (preg_match('/DOB:\s*(\d{2}\/\d{2}\/\d{4})/', $block, $m)) {
                     $entry['dob'] = date('Y-m-d', strtotime($m[1]));
@@ -269,8 +269,9 @@ class ExamsController extends AppController {
                 }
 
                 // Room (extracts the number after "MRI Room")
-                if (preg_match('/MRI Room\s*(\d+)/i', $block, $m)) {
+                if (preg_match('/(MRI.*?)(?=\d)/', $block, $m)) {
                     $entry['room'] = trim($m[1]);
+                    echo $entry['room']; // Output: "MRI Suite A"
                 }
 
                 // Sedation detection
