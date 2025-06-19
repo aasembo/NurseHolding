@@ -316,7 +316,7 @@ footer p{
 
   <!-- Upload CSV -->
   <li class="nav-item">
-    <a class="nav-link" href="<?= $this->Url->build(['controller' => 'Exams', 'action' => 'upload']) ?>">UploadCSV</a>
+    <a class="nav-link" href="<?= $this->Url->build(['controller' => 'Exams', 'action' => 'upload']) ?>">Upload</a>
   </li>
 
   <!-- Announcements -->
