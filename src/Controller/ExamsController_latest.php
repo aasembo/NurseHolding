@@ -230,29 +230,14 @@ class ExamsController extends AppController {
 
 
             // ✅ Split each block using date + time as a pattern (e.g., "06/16/2025      7:00 AM")
-            // Split the text into blocks, each starting with a date/time and ending with "Acct #" or "Acct" line with a number
-            $pattern = '/
-                (                                   # Start of capturing group
-                    \d{2}\/\d{2}\/\d{4}              # Date at the start
-                    \s+\d{1,2}:\d{2}\s*[AP]M         # Time
-                    .*?                              # Non-greedy everything until account
-                    Acct                             # Match "Acct"
-                    (?:\s*[\r\n]+)?                  # Allow optional newline after "Acct"
-                    \s*#\s*[:\-]?\s*\d{6,}           # Match "#: 123456" with optional spaces or linebreaks
-                    .*?(?:\r?\n|\r|$)                # Match rest of line (optional)
-                )
-            /msx';
-                        
-
-            preg_match_all($pattern, $text, $matches);
-            $blocks = $matches[1];
+            $blocks = preg_split('/(?=\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s*[AP]M)/', $text);
             $entries = [];
 
             foreach ($blocks as $block) {
                 if (trim($block) === '') continue;
 
                 $entry = [];
-                // $this->log( 'Failed to save patient: ' .$block, 'error' );
+                //$this->log( 'Failed to save patient: ' .$block, 'error' );
                 // DOB
                 if (preg_match('/DOB:\s*(\d{2}\/\d{2}\/\d{4})/', $block, $m)) {
                     $entry['dob'] = date('Y-m-d', strtotime($m[1]));
@@ -278,23 +263,9 @@ class ExamsController extends AppController {
                 //     $entry['patient_name'] = trim($m[1]);
                 // }
 
-                // Extract patient name in various formats
-                // 1. "Firstname Lastname" or "firstname lastname"
-                // 2. "Firstname-Lastname" or "firstname-lastname"
-                // 3. "Firstname,Lastname" or "firstname,lastname"
-                $entry['patient_name'] = null;
+                if( preg_match_all('/\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s+[AP]M\s+([A-Za-z\s]+?)\s+MRI/', $block, $matches)){
 
-                // Try "Firstname Lastname" or "firstname lastname"
-                if (preg_match('/\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s+[AP]M\s+([A-Za-z]+ [A-Za-z]+)\s+MRI/', $block, $m)) {
-                    $entry['patient_name'] = $m[1];
-                }
-                // Try "Firstname-Lastname" or "firstname-lastname"
-                elseif (preg_match('/\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s+[AP]M\s+([A-Za-z]+-[A-Za-z]+)\s+MRI/', $block, $m)) {
-                    $entry['patient_name'] = str_replace('-', ' ', $m[1]);
-                }
-                // Try "Firstname,Lastname" or "firstname,lastname"
-                elseif (preg_match('/\d{2}\/\d{2}\/\d{4}\s+\d{1,2}:\d{2}\s+[AP]M\s+([A-Za-z]+,[A-Za-z]+)\s+MRI/', $block, $m)) {
-                    $entry['patient_name'] = str_replace(',', ' ', $m[1]);
+                            $entry['patient_name'] = $matches[1][0] ?? null;
                 }
 
                 // Room (extracts the number after "MRI Room")
@@ -302,13 +273,8 @@ class ExamsController extends AppController {
                 //     $entry['room'] = trim($m[1]);
                 // }
 
-                // if (preg_match('/(MRI.*?)(?=\()/i', $block, $match)) {
-                //     $entry['room'] = trim($match[1]);
-                // }
-
-                // Extract full "MRI Room X" phrase
-                if (preg_match('/(MRI Room\s+[^\s]+)/i', $block, $m)) {
-                    $entry['room'] = trim($m[1]);  // Result: "MRI Room 1" or "MRI Room 3T"
+                if (preg_match('/(MRI.*?)(?=\()/i', $block, $match)) {
+                    $entry['room'] = trim($match[1]);
                 }
 
                 // Sedation detection
@@ -371,7 +337,7 @@ class ExamsController extends AppController {
             $imagingRoomsTable = TableRegistry::getTableLocator()->get( 'ImagingRooms' );
 
             foreach ($entries as $entry) {
-                // $this->log( 'Failed to save patient visit: ' . json_encode( $entry ), 'error' );
+                //$this->log( 'Failed to save patient visit: ' . json_encode( $entry ), 'error' );
                 $medicalRecordNumber = $entry['mrn'];
                 // ===  ===  ===  = PATIENT HANDLING ===  ===  ===  =
                 $patient = $patientsTable->find()
@@ -410,10 +376,9 @@ class ExamsController extends AppController {
                 if(isset($entry['acct'])){
                     $visitData = [
                         'patient_id' => $patient->id,
-                        'accession' => 123456,
-                        'visit_number' => $entry['acct'],
+                        'accession' => $entry['acct'],
+                        'visit_number' => 12345,
                     ];
-                    $this->log( 'Failed to save patient visit: ' . json_encode( $visitData ), 'error' );
 
                     $visit = $patientVisitsTable->newEntity( $visitData );
                     if ( !$patientVisitsTable->save( $visit ) ) {
