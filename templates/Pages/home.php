@@ -13,14 +13,16 @@ $base = Router::url('/', true);
 
 // Manually define your controllers and common actions (dynamic discovery in CakePHP is limited)
 $controllers = [
-    'Users' => ['index', 'view', 'add', 'edit', 'login', 'logout'],
-    'Patients' => ['index', 'view', 'add', 'edit','patientSchedule'],
-    'Specialists' => ['index', 'view', 'add', 'edit'],
-    'Exams' => ['index', 'view', 'add', 'edit', 'upload'],
-    'Announcements' => ['index', 'view', 'add', 'edit'],
-    'Timings' => ['index', 'view', 'add', 'edit'],
-    'ExamStatus' => ['index', 'view', 'add', 'edit'],
-    'Diagnosis' => ['index', 'view', 'add', 'edit'],
+    'Users' => ['index', 'add', 'login', 'logout'],
+    'Patients' => ['index', 'add', 'patientSchedule'],
+    'Specialists' => ['index', 'add'],
+    'Exams' => ['index', 'add', 'upload'],
+    'Announcements' => ['index', 'add'],
+    // 'Timings' => ['index', 'add'],
+    // 'ExamStatus' => ['index','add'],
+    'Timings' => ['index', 'add'],
+    'ExamStatus' => ['index','add'],
+    'Diagnosis' => ['index', 'add'],
     
 ];
 ?>
@@ -90,7 +92,8 @@ $controllers = [
     <?php 
     $counter = 0;
     foreach ($controllers as $controller => $actions):
-        if ($counter % 2 === 0): // start a new row every 2 controllers ?>
+        if ($counter % 2 === 0): // start a new row every 2 controllers 
+        ?>
             <div class="row">
         <?php endif; ?>
 
@@ -98,7 +101,7 @@ $controllers = [
 
         <div class="column column-50">
             <div class="link-box">
-            <h3><?= h($controller) ?> Controller</h3>
+            <h3><?= h($controller) ?></h3>
             <ul class="link-list">
                 <?php foreach ($actions as $action): ?>
                     <?php if($action == 'index'){
@@ -123,7 +126,11 @@ $controllers = [
                      ?>
                     <li>  
                         <span><i class="<?php echo $icon ?>"></i></span>
+                        <?php if($controller == "Timings" || $controller == "ExamStatus") { ?>
+                           <a href="#"><?= ucfirst($action) ?></a>
+                       <?php }else{?>
                         <?= $this->Html->link(ucfirst($action), ['controller' => $controller, 'action' => $action]) ?>
+                        <?php } ?>
                     </li>
                 <?php endforeach; ?>
             </ul>

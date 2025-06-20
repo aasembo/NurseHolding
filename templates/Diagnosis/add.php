@@ -16,7 +16,7 @@
         <div class="diagnosis form content">
             <?= $this->Form->create($diagnosi) ?>
             <fieldset>
-                <h1><?= __('Add Diagnosi') ?></h1>
+                <h1><?= __('Add Diagnosis') ?></h1>
                 <?php
                     echo $this->Form->control('exam_id', ['options' => $exams]);
                     echo $this->Form->control('diagnosis_text');

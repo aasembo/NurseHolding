@@ -5,8 +5,10 @@
  */
 ?>
 <div class="specialists index content">
-    <?= $this->Html->link(__('New Specialist'), ['action' => 'add'], ['class' => 'themebtn']) ?>
+    <div class="table_heading">
     <h3><?= __('Specialists') ?></h3>
+    <?= $this->Html->link(__('New Specialist'), ['action' => 'add'], ['class' => 'themebtn']) ?>
+    </div>
     <div class="table-responsive">
         <table>
             <thead>
@@ -27,10 +29,10 @@
                     <td><?= h($specialist->email) ?></td>
                     <td><?= h($specialist->phone) ?></td>
                     <td><?= h($specialist->specialty) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $specialist->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $specialist->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $specialist->id], ['confirm' => __('Are you sure you want to delete # {0}?', $specialist->id)]) ?>
+                    <td class="">
+                        <?= $this->Html->link(__(''), ['action' => 'view', $specialist->id],['class'=> 'bg-primary-light fa fa-eye']) ?>
+                        <?= $this->Html->link(__(''), ['action' => 'edit', $specialist->id],['class'=> 'bg-primary-light fa fa-edit']) ?>
+                        <?= $this->Form->postLink(__(''), ['action' => 'delete', $specialist->id], ['confirm' => __('Are you sure you want to delete # {0}?', $specialist->id),'class'=> 'bg-primary-light fa fa-trash']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
