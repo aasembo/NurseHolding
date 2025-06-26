@@ -9,7 +9,6 @@ use Cake\ORM\Entity;
  * AnnouncementCategory Entity
  *
  * @property int $id
- * @property int $announcement_id
  * @property string $category_name
  * @property string $category_value
  *
@@ -27,9 +26,8 @@ class AnnouncementCategory extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'announcement_id' => true,
         'category_name' => true,
-        'category_value' => true,
+        //'category_value' => true,
         'announcement' => true,
     ];
 }

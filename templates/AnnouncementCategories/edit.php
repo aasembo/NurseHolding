@@ -23,9 +23,8 @@
             <fieldset>
                 <h1><?= __('Edit Announcement Category') ?></h1>
                 <?php
-                    echo $this->Form->control('announcement_id', ['options' => $announcements]);
                     echo $this->Form->control('category_name');
-                    echo $this->Form->control('category_value');
+                    //echo $this->Form->control('category_value');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>

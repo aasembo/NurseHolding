@@ -43,10 +43,10 @@ class AnnouncementCategoriesTable extends Table
         $this->setDisplayField('category_name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Announcements', [
-            'foreignKey' => 'announcement_id',
-            'joinType' => 'INNER',
+         $this->hasMany('Announcements', [
+            'foreignKey' => 'category_id'  // matches column in announcements table
         ]);
+
     }
 
     /**
@@ -58,34 +58,17 @@ class AnnouncementCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('announcement_id')
-            ->notEmptyString('announcement_id');
-
-        $validator
             ->scalar('category_name')
             ->maxLength('category_name', 255)
             ->requirePresence('category_name', 'create')
             ->notEmptyString('category_name');
 
-        $validator
-            ->scalar('category_value')
-            ->requirePresence('category_value', 'create')
-            ->notEmptyString('category_value');
+        // $validator
+        //     ->scalar('category_value')
+        //     ->requirePresence('category_value', 'create')
+        //     ->notEmptyString('category_value');
 
         return $validator;
     }
 
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn(['announcement_id'], 'Announcements'), ['errorField' => 'announcement_id']);
-
-        return $rules;
-    }
 }

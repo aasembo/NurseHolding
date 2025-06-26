@@ -316,12 +316,24 @@ footer p{
 
   <!-- Upload CSV -->
   <li class="nav-item">
-    <a class="nav-link" href="<?= $this->Url->build(['controller' => 'Exams', 'action' => 'upload']) ?>">Upload</a>
+    <a class="nav-link" href="<?= $this->Url->build(['controller' => 'Exams', 'action' => 'upload']) ?>">UploadCSV</a>
   </li>
 
-  <!-- Announcements -->
-  <li class="nav-item">
-    <a class="nav-link" href="<?= $this->Url->build(['controller' => 'Announcements', 'action' => 'index']) ?>">Announcements</a>
+
+  <!-- Announcements Dropdown -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle"  id="AnnouncementsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Announcements
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="AnnouncementsDropdown">
+        <li>
+            <a class="dropdown-item" href="<?= $this->Url->build(['controller' => 'Announcements', 'action' => 'index']) ?>">
+      Announcements
+    </a>
+        </li>
+      <li><a class="dropdown-item" href="<?= $this->Url->build(['controller' => 'announcementCategories', 'action' => 'index']) ?>">Announcement Category
+</a></li>
+    </ul>
   </li>
 
 </ul>

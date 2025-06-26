@@ -18,10 +18,7 @@
         <div class="announcementCategories view content">
             <h3><?= h($announcementCategory->category_name) ?></h3>
             <table>
-                <tr>
-                    <th><?= __('Announcement') ?></th>
-                    <td><?= $announcementCategory->hasValue('announcement') ? $this->Html->link($announcementCategory->announcement->id, ['controller' => 'Announcements', 'action' => 'view', $announcementCategory->announcement->id]) : '' ?></td>
-                </tr>
+ 
                 <tr>
                     <th><?= __('Category Name') ?></th>
                     <td><?= h($announcementCategory->category_name) ?></td>

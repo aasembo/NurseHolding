@@ -19,6 +19,7 @@ class AnnouncementCategoriesController extends AppController
     {
         $query = $this->AnnouncementCategories->find()
             ->contain(['Announcements']);
+            
         $announcementCategories = $this->paginate($query);
 
         $this->set(compact('announcementCategories'));
@@ -89,15 +90,25 @@ class AnnouncementCategoriesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $announcementCategory = $this->AnnouncementCategories->get($id);
-        if ($this->AnnouncementCategories->delete($announcementCategory)) {
-            $this->Flash->success(__('The announcement category has been deleted.'));
-        } else {
-            $this->Flash->error(__('The announcement category could not be deleted. Please, try again.'));
-        }
+{
+    $this->request->allowMethod(['post', 'delete']);
 
+    $announcementCategory = $this->AnnouncementCategories->get($id, [
+        'contain' => ['Announcements']
+    ]);
+
+    // Prevent deletion if related announcements exist
+    if (!empty($announcementCategory->announcements)) {
+        $this->Flash->error(__('Cannot delete this category because it has associated announcements.'));
         return $this->redirect(['action' => 'index']);
     }
+
+    if ($this->AnnouncementCategories->delete($announcementCategory)) {
+        $this->Flash->success(__('The announcement category has been deleted.'));
+    } else {
+        $this->Flash->error(__('The announcement category could not be deleted. Please, try again.'));
+    }
+
+    return $this->redirect(['action' => 'index']);
+}
 }
