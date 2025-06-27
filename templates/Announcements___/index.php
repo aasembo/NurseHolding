@@ -41,38 +41,11 @@ use Cake\ORM\TableRegistry;
                     <td><?= h($announcement->department ?? '-') ?></td>
                     <td>
                         <?php
-                        if (
-                            $announcement->audience_type === 'individual' &&
-                            !empty($announcement->department) &&
-                            !empty($announcement->department_ids)
-                        ) {
+                        if ($announcement->audience_type === 'individual' && $announcement->department && $announcement->department_id) {
                             try {
-                                $department = $announcement->department; // e.g., 'nurses'
-                                $tableName = ucfirst($department);       // e.g., 'Nurses'
-                                $userTable = TableRegistry::getTableLocator()->get($tableName);
-
-                                $ids = is_array($announcement->department_ids)
-                                    ? $announcement->department_ids
-                                    : explode(',', $announcement->department_ids);
-
-                                $users = $userTable->find()
-                                    ->where(['id IN' => $ids])
-                                    ->all();
-
-                                if ($users->isEmpty()) {
-                                    echo 'User #' . h($announcement->department_ids);
-                                } else {
-                                    $names = [];
-                                    foreach ($users as $user) {
-                                        //debug($user);
-                                        if($department == 'nurses'){
-                                            $names[] = h($user->LastName ?? ('User #' . $user->LastName));
-                                        }else{
-                                            $names[] = h($user->name ?? ('User #' . $user->name));
-                                        }
-                                    }
-                                    echo implode(', ', $names);
-                                }
+                                $table = TableRegistry::getTableLocator()->get(ucfirst($announcement->department));
+                                $user = $table->get($announcement->department_ids);
+                                echo h($user->name ?? 'User #' . $announcement->department_ids);
                             } catch (\Exception $e) {
                                 echo 'User #' . h($announcement->department_ids);
                             }

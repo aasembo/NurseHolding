@@ -68,16 +68,16 @@ class AnnouncementsController extends AppController
                 }
             }
 
-             // ✅ Handle image upload only if file is uploaded
-                $image = $this->request->getData('image_file');
-                if ($image && $image->getError() === UPLOAD_ERR_OK) {
-                    $filename = time() . '_' . $image->getClientFilename();
-                    $uploadPath = WWW_ROOT . 'img/uploads/' . $filename;
-                    $image->moveTo($uploadPath);
-                    $data['image_file'] = 'uploads/' . $filename;
-                } else {
-                    $data['image_file'] = 'placeholder.png';
-                }
+            // ✅ Handle image upload
+            $image = $this->request->getData('image_file');
+            if ($image && $image->getError() === UPLOAD_ERR_OK) {
+                $filename = time() . '_' . $image->getClientFilename();
+                $uploadPath = WWW_ROOT . 'img/uploads/' . $filename;
+                $image->moveTo($uploadPath);
+                $data['image_file'] = 'uploads/' . $filename;
+            }else{
+                $data['image_file'] = 'placeholder.png';
+            }
             // unset($data['image_file']); // avoids mass-assignment errors
 
             $announcement = $this->Announcements->patchEntity($announcement, $data);
@@ -108,13 +108,6 @@ class AnnouncementsController extends AppController
             'technicians' => 'Technicians'
         ];
         $departmentUsers = [];
-
-        $department = $announcement->department; // e.g., 'nurses'
-        $tableName = ucfirst($department);       // e.g., 'Nurses'
-
-        $usersTable = $this->fetchTable($tableName);
-        $departmentUsers = $usersTable->find('list')->toArray();
-
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -182,19 +175,6 @@ class AnnouncementsController extends AppController
 
         $this->set(compact('announcement', 'departments', 'departmentUsers'));
     }
-
-    // public function delete($id = null)
-    // {
-    //     $this->request->allowMethod(['post', 'delete']);
-    //     $announcement = $this->Announcements->get($id);
-    //     if ($this->Announcements->delete($announcement)) {
-    //         $this->Flash->success(__('The announcement has been deleted.'));
-    //     } else {
-    //         $this->Flash->error(__('The announcement could not be deleted. Please, try again.'));
-    //     }
-
-    //     return $this->redirect(['action' => 'index']);
-    // }
 
     public function delete($id = null)
     {

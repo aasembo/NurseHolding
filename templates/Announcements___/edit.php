@@ -2,17 +2,6 @@
 <?= $this->Html->script('https://code.jquery.com/jquery-3.6.0.min.js') ?>
 <?= $this->Html->script('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js') ?>
 
-<?php
-// Convert department_ids to array for JS
-$selectedDepartmentIds = is_array($announcement->department_ids)
-    ? $announcement->department_ids
-    : explode(',', (string)$announcement->department_ids);
-?>
-
-<script>
-const preselectedUserIds = <?= json_encode(array_map('strval', $selectedDepartmentIds)) ?>;
-</script>
-
 <div class="announcements form content">
     <?= $this->Form->create($announcement, ['type' => 'file']) ?>
     <fieldset>
@@ -76,6 +65,7 @@ const preselectedUserIds = <?= json_encode(array_map('strval', $selectedDepartme
     <?= $this->Form->end() ?>
 </div>
 
+<!-- ✅ Dynamic Form Behavior -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const audienceType = document.getElementById('audience-type');
@@ -98,14 +88,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (department.value) {
                 userGroup.style.display = 'block';
-                fetchUsers(department.value, preselectedUserIds);
+                fetchUsers(department.value);
             } else {
                 userGroup.style.display = 'none';
             }
         }
     }
 
-    function fetchUsers(depId, preselected = []) {
+    function fetchUsers(depId) {
+        const selectedValues = userSelect.val() || [];
         userSelect.empty().append('<option value="">Loading...</option>').trigger('change');
 
         fetch(`/announcements/get-users-by-department?department=${depId}`)
@@ -113,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 userSelect.empty();
                 for (const [id, name] of Object.entries(data)) {
-                    const isSelected = preselected.includes(String(id));
+                    const isSelected = selectedValues.includes(id);
                     const option = new Option(name, id, isSelected, isSelected);
                     userSelect.append(option);
                 }
@@ -129,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     department.addEventListener('change', function () {
         if (audienceType.value === 'individual' && department.value) {
             userGroup.style.display = 'block';
-            fetchUsers(department.value, preselectedUserIds);
+            fetchUsers(department.value);
         } else {
             userGroup.style.display = 'none';
             userSelect.empty().append('<option value="">Select user</option>').trigger('change');
@@ -142,16 +133,12 @@ document.addEventListener('DOMContentLoaded', function () {
         width: '100%'
     });
 
-    // On initial load
+    // Initialize visibility on page load
     updateVisibility();
 
-    if (
-        audienceType.value === 'individual' &&
-        department.value &&
-        preselectedUserIds.length > 0
-    ) {
-        userGroup.style.display = 'block';
-        fetchUsers(department.value, preselectedUserIds);
+    // Preload users in edit if applicable
+    if (audienceType.value === 'individual' && department.value && userSelect.find('option').length <= 1) {
+        fetchUsers(department.value);
     }
 });
 </script>
