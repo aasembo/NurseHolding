@@ -16,7 +16,9 @@ use Cake\ORM\TableRegistry;
             <thead class="thead-dark">
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
+                    <th><?= __('Category') ?></th>
                     <th><?= __('Image') ?></th>
+                    <th><?= __('Name') ?></th>
                     <th><?= $this->Paginator->sort('content') ?></th>
                     <th><?= $this->Paginator->sort('audience_type', 'Audience') ?></th>
                     <th><?= __('Department') ?></th>
@@ -26,9 +28,12 @@ use Cake\ORM\TableRegistry;
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($announcements as $announcement): ?>
+                <?php foreach ($announcements as $announcement): 
+                    //debug($announcement);    
+                ?>
                 <tr>
                     <td><?= $this->Number->format($announcement->id) ?></td>
+                    <td><?= h($announcement->announcement_category->category_name) ?></td>
                     <td>
                         <?php if (!empty($announcement->image_file)): ?>
                             <?= $this->Html->image($announcement->image_file, ['alt' => 'Announcement Image', 'width' => '50']) ?>
@@ -36,6 +41,7 @@ use Cake\ORM\TableRegistry;
                             <span>-</span>
                         <?php endif; ?>
                     </td>
+                    <td><?= h($announcement->announcement_name) ?></td>
                     <td><?= h($announcement->content) ?></td>
                     <td><?= h(ucfirst($announcement->audience_type)) ?></td>
                     <td><?= h($announcement->department ?? '-') ?></td>
