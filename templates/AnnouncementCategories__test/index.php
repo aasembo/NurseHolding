@@ -22,7 +22,7 @@
                     <td><?= $this->Number->format($announcementCategory->id) ?></td>
                     <td><?= $announcementCategory->hasValue('announcement') ? $this->Html->link($announcementCategory->announcement->id, ['controller' => 'Announcements', 'action' => 'view', $announcementCategory->announcement->id]) : '' ?></td>
                     <td><?= h($announcementCategory->category_name) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $announcementCategory->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $announcementCategory->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $announcementCategory->id], ['confirm' => __('Are you sure you want to delete # {0}?', $announcementCategory->id)]) ?>

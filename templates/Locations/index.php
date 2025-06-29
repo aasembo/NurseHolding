@@ -21,7 +21,7 @@
                 <tr>
                     <td><?= $this->Number->format($location->id) ?></td>
                     <td><?= h($location->name) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $location->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $location->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $location->id], ['confirm' => __('Are you sure you want to delete # {0}?', $location->id)]) ?>

@@ -25,7 +25,7 @@
                     <td><?= $reporting->hasValue('exam') ? $this->Html->link($reporting->exam->exam_type, ['controller' => 'Exams', 'action' => 'view', $reporting->exam->id]) : '' ?></td>
                     <td><?= h($reporting->created_at) ?></td>
                     <td><?= h($reporting->updated_at) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $reporting->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $reporting->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $reporting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $reporting->id)]) ?>

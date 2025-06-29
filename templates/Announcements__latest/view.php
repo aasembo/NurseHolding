@@ -49,7 +49,7 @@
                             <td><?= h($announcementCategory->id) ?></td>
                             <td><?= h($announcementCategory->category_name) ?></td>
                             <td><?= h($announcementCategory->category_value) ?></td>
-                            <td class="actions">
+                            <td class="">
                                 <?= $this->Html->link(__('View'), ['controller' => 'AnnouncementCategories', 'action' => 'view', $announcementCategory->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'AnnouncementCategories', 'action' => 'edit', $announcementCategory->id]) ?>
                                 <?= $this->Form->postLink(__('Delete'), ['controller' => 'AnnouncementCategories', 'action' => 'delete', $announcementCategory->id], ['confirm' => __('Are you sure you want to delete # {0}?', $announcementCategory->id)]) ?>

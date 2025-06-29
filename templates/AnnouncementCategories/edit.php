@@ -18,7 +18,7 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="announcementCategories form content">
+        <div class="announcementCategories table_form">
             <?= $this->Form->create($announcementCategory) ?>
             <fieldset>
                 <h1><?= __('Edit Announcement Category') ?></h1>

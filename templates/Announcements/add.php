@@ -14,11 +14,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="announcements form content">
+        <div class="announcements table_form">
             <?= $this->Form->create($announcement, ['type' => 'file']) ?>
             <fieldset>
                 <h1><?= __('Add Announcement') ?></h1>
-
+                <?= $this->Form->control('announcement_name', ['label' => 'Announcement Name']) ?>
                 <?= $this->Form->control('content', ['label' => 'Announcement Content']) ?>
 
                 <?= $this->Form->control('category_id', [

@@ -27,7 +27,7 @@
                     <td><?= h($technician->email) ?></td>
                     <td><?= h($technician->phone) ?></td>
                     <td><?= h($technician->specialty) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $technician->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $technician->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $technician->id], ['confirm' => __('Are you sure you want to delete # {0}?', $technician->id)]) ?>

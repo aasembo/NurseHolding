@@ -57,12 +57,6 @@ class AnnouncementsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        
-        $validator
-            ->scalar('announcement_name')
-            ->requirePresence('announcement_name', 'create')
-            ->notEmptyString('announcement_name');
-            
         $validator
             ->scalar('content')
             ->requirePresence('content', 'create')

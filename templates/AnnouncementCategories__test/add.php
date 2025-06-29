@@ -6,7 +6,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column  column-20"">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('List Announcement Categories'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>

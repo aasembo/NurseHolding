@@ -156,7 +156,7 @@
                             <td><?= h($examTiming->exam_id) ?></td>
                             <td><?= h($examTiming->start_time) ?></td>
                             <td><?= h($examTiming->end_time) ?></td>
-                            <td class="actions">
+                            <td class="">
                                 <?= $this->Html->link(__(''), ['controller' => 'ExamTimings', 'action' => 'view', $examTiming->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
                                 <?= $this->Html->link(__(''), ['controller' => 'ExamTimings', 'action' => 'edit', $examTiming->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
                                 <?= $this->Form->postLink(__(''), ['controller' => 'ExamTimings', 'action' => 'delete', $examTiming->id], ['confirm' => __('Are you sure you want to delete # {0}?', $examTiming->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>

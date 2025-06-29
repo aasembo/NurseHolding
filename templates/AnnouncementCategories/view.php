@@ -15,8 +15,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="announcementCategories view content">
-            <h3><?= h($announcementCategory->category_name) ?></h3>
+        <div class="announcementCategories management_table">
+            <div class="table_heading">
+                            <h1><?= h($announcementCategory->category_name) ?></h1>
+</div>
+<div class="table-responsive">
             <table>
  
                 <tr>
@@ -28,8 +31,9 @@
                     <td><?= $this->Number->format($announcementCategory->id) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Category Value') ?></strong>
+</div>
+            <div class="text p-4">
+                <label><?= __('Category Value') ?></label>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($announcementCategory->category_value)); ?>
                 </blockquote>

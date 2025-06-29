@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column  column-20"">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Scheduled Time'), ['action' => 'edit', $scheduledTime->id], ['class' => 'side-nav-item']) ?>
@@ -63,7 +63,7 @@
                             <td><?= h($exam->imaging_room_id) ?></td>
                             <td><?= h($exam->technician_id) ?></td>
                             <td><?= h($exam->specialist_id) ?></td>
-                            <td class="actions">
+                            <td class="">
                                 <?= $this->Html->link(__('View'), ['controller' => 'Exams', 'action' => 'view', $exam->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Exams', 'action' => 'edit', $exam->id]) ?>
                                 <?= $this->Form->postLink(__('Delete'), ['controller' => 'Exams', 'action' => 'delete', $exam->id], ['confirm' => __('Are you sure you want to delete # {0}?', $exam->id)]) ?>

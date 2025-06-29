@@ -25,7 +25,7 @@
                     <td><?= $examStatusUpdate->hasValue('exam') ? $this->Html->link($examStatusUpdate->exam->exam_type, ['controller' => 'Exams', 'action' => 'view', $examStatusUpdate->exam->id]) : '' ?></td>
                     <td><?= h($examStatusUpdate->event_type) ?></td>
                     <td><?= h($examStatusUpdate->timestamp) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $examStatusUpdate->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $examStatusUpdate->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $examStatusUpdate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $examStatusUpdate->id)]) ?>

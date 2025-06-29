@@ -45,7 +45,7 @@
                     <td><?= h($nursingIntervention->meds) ?></td>
                     <td><?= h($nursingIntervention->created_at) ?></td>
                     <td><?= h($nursingIntervention->updated_at) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $nursingIntervention->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $nursingIntervention->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $nursingIntervention->id], ['confirm' => __('Are you sure you want to delete # {0}?', $nursingIntervention->id)]) ?>

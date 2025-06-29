@@ -25,7 +25,7 @@
                     <td><?= h($patientLog->reviewed_by) ?></td>
                     <td><?= h($patientLog->called_by) ?></td>
                     <td><?= $patientLog->hasValue('exam') ? $this->Html->link($patientLog->exam->exam_type, ['controller' => 'Exams', 'action' => 'view', $patientLog->exam->id]) : '' ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $patientLog->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $patientLog->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $patientLog->id], ['confirm' => __('Are you sure you want to delete # {0}?', $patientLog->id)]) ?>

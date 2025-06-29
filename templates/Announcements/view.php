@@ -15,8 +15,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="announcements view content">
-            <h3><?= h($announcement->id) ?></h3>
+        <div class="announcements management_table">
+            <div class="table_heading">
+                <h1><?= h($announcement->id) ?></h1>
+            </div>
+            <div class="table-responsive">
             <table>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -27,14 +30,18 @@
                     <td><?= h($announcement->created_at) ?></td>
                 </tr>
             </table>
-            <div class="text">
-                <strong><?= __('Content') ?></strong>
+</div>
+            <div class="text p-4">
+                <label><?= __('Content') ?></label>
                 <blockquote>
                     <?= $this->Text->autoParagraph(h($announcement->content)); ?>
                 </blockquote>
             </div>
             <div class="">
-                <h4><?= __('Related Announcement Categories') ?></h4>
+                <div class="table-responsive">
+                                    <h4><?= __('Related Announcement Categories') ?></h4>
+
+                </div>
                 <?php if (!empty($announcement->announcement_categories)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -49,10 +56,10 @@
                             <td><?= h($announcementCategory->id) ?></td>
                             <td><?= h($announcementCategory->category_name) ?></td>
                             <td><?= h($announcementCategory->category_value) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'AnnouncementCategories', 'action' => 'view', $announcementCategory->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'AnnouncementCategories', 'action' => 'edit', $announcementCategory->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'AnnouncementCategories', 'action' => 'delete', $announcementCategory->id], ['confirm' => __('Are you sure you want to delete # {0}?', $announcementCategory->id)]) ?>
+                            <td class="">
+                                <?= $this->Html->link(__(''), ['controller' => 'AnnouncementCategories', 'action' => 'view', $announcementCategory->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'AnnouncementCategories', 'action' => 'edit', $announcementCategory->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'AnnouncementCategories', 'action' => 'delete', $announcementCategory->id], ['confirm' => __('Are you sure you want to delete # {0}?', $announcementCategory->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -25,7 +25,7 @@
                     <td><?= $examTiming->hasValue('exam') ? $this->Html->link($examTiming->exam->exam_type, ['controller' => 'Exams', 'action' => 'view', $examTiming->exam->id]) : '' ?></td>
                     <td><?= h($examTiming->start_time) ?></td>
                     <td><?= h($examTiming->end_time) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $examTiming->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $examTiming->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $examTiming->id], ['confirm' => __('Are you sure you want to delete # {0}?', $examTiming->id)]) ?>

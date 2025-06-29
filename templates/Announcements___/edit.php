@@ -48,7 +48,7 @@
 
         <?php if (!empty($announcement->image_file)): ?>
             <div style="margin: 10px 0;">
-                <strong>Current Image:</strong><br>
+                <label>Current Image:</label><br>
                 <img src="<?= $this->Url->image($announcement->image_file) ?>" width="150" />
             </div>
         <?php endif; ?>

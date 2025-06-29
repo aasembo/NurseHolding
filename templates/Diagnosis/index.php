@@ -21,7 +21,7 @@
                 <tr>
                     <td><?= $this->Number->format($diagnosi->id) ?></td>
                     <td><?= $diagnosi->hasValue('exam') ? $this->Html->link($diagnosi->exam->exam_type, ['controller' => 'Exams', 'action' => 'view', $diagnosi->exam->id]) : '' ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $diagnosi->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $diagnosi->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $diagnosi->id], ['confirm' => __('Are you sure you want to delete # {0}?', $diagnosi->id)]) ?>

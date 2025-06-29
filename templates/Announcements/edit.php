@@ -13,8 +13,9 @@ $selectedDepartmentIds = is_array($announcement->department_ids)
 const preselectedUserIds = <?= json_encode(array_map('strval', $selectedDepartmentIds)) ?>;
 </script>
 
-<div class="announcements form content">
+<div class="announcements table_form">
     <?= $this->Form->create($announcement, ['type' => 'file']) ?>
+    <?= $this->Form->control('announcement_name', ['label' => 'Announcement Name']) ?>
     <fieldset>
         <h1><?= __('Edit Announcement') ?></h1>
 
@@ -59,7 +60,7 @@ const preselectedUserIds = <?= json_encode(array_map('strval', $selectedDepartme
 
         <?php if (!empty($announcement->image_file)): ?>
             <div style="margin: 10px 0;">
-                <strong>Current Image:</strong><br>
+                <label>Current Image:</label><br>
                 <img src="<?= $this->Url->image($announcement->image_file) ?>" width="150" />
             </div>
         <?php endif; ?>

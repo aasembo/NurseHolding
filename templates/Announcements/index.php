@@ -82,11 +82,11 @@ use Cake\ORM\TableRegistry;
                         ?>
                     </td>
                     <td><?= h($announcement->created_at) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $announcement->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $announcement->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $announcement->id], [
-                            'confirm' => __('Are you sure you want to delete # {0}?', $announcement->id)
+                    <td class="">
+                        <?= $this->Html->link(__(''), ['action' => 'view', $announcement->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                        <?= $this->Html->link(__(''), ['action' => 'edit', $announcement->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                        <?= $this->Form->postLink(__(''), ['action' => 'delete', $announcement->id], [
+                            'confirm' => __('Are you sure you want to delete # {0}?', $announcement->id), 'class'=> 'bg-primary-light fa fa-trash'
                         ]) ?>
                     </td>
                 </tr>

@@ -310,7 +310,7 @@ input[type='color'] {
     margin-bottom: 2px;
     font-size: 14px;
 }
-.table_form input, .table_form textarea, .table_form select{
+.table_form input, .table_form textarea, .table_form select, .table_form .select2{
     height: auto;
     background-color: #efefef;
     border-radius: 5px;
@@ -376,6 +376,7 @@ input[type='color'] {
     /* border: 1px solid #dad8d4; */
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 10px;
+    padding: 10px 0;
 }
 .themebtn {
     padding: 5px 12px;
@@ -512,6 +513,67 @@ a:hover{
 .upload-files-container h1 {
     font-size: 22px;
     font-weight: 600;
+}
+.table_form .select2-container--default .select2-selection--single{
+    background-color: transparent;
+    border: none;
+}
+.table_form .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    width: 20px;
+    transform: translateY(-50%);
+}
+.table_form .select2-container .select2-selection--single .select2-selection__rendered{
+    padding-left: 0;
+}
+.table_form input[type="file"] {
+    background-color: #efefef;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.table_form input[type="file"]::file-selector-button {
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.table_form input[type="file"]::file-selector-button:hover {
+    background-color: #e92063c7;
+}
+.table_form .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+    top:-10px;
+    padding: 0;
+}
+.table_form .select2-container--default .select2-selection--multiple{
+    background-color: transparent;
+    border: none !important;
+}
+.table_form .select2{
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+}
+.table_form .select2-container--default .select2-selection--multiple .select2-selection__clear{
+    background-color: #e92063c7;
+}
+.table_form .select2-container .select2-search--inline .select2-search__field{
+    margin: 0;
 }
 @media screen and (max-width: 640px) {
     /* Fix milligram not having a responsive column system */

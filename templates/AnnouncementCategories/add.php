@@ -6,14 +6,14 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column  column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('List Announcement Categories'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-80">
-        <div class="announcementCategories form content">
+        <div class="announcementCategories table_form">
             <?= $this->Form->create($announcementCategory) ?>
             <fieldset>
                 <h1><?= __('Add Announcement Category') ?></h1>

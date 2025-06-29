@@ -23,7 +23,7 @@
                 <tr>
                     <td><?= $this->Number->format($announcement->id) ?></td>
                     <td><?= h($announcement->created_at) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $announcement->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $announcement->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $announcement->id], ['confirm' => __('Are you sure you want to delete # {0}?', $announcement->id)]) ?>

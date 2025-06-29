@@ -178,7 +178,7 @@
                             <td><?= h($nursingIntervention->comments) ?></td>
                             <td><?= h($nursingIntervention->created_at) ?></td>
                             <td><?= h($nursingIntervention->updated_at) ?></td>
-                            <td class="actions">
+                            <td class="">
                                 <?= $this->Html->link(__(''), ['controller' => 'NursingIntervention', 'action' => 'view', $nursingIntervention->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
                                 <?= $this->Html->link(__(''), ['controller' => 'NursingIntervention', 'action' => 'edit', $nursingIntervention->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
                                 <?= $this->Form->postLink(__(''), ['controller' => 'NursingIntervention', 'action' => 'delete', $nursingIntervention->id], ['confirm' => __('Are you sure you want to delete # {0}?', $nursingIntervention->id),'class'=> 'bg-primary-light fa fa-trash' ]) ?>

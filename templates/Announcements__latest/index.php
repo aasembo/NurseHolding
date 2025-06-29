@@ -55,7 +55,7 @@ use Cake\ORM\TableRegistry;
                         ?>
                     </td>
                     <td><?= h($announcement->created_at) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $announcement->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $announcement->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $announcement->id], [

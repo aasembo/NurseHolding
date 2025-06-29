@@ -23,7 +23,7 @@
                     <td><?= $this->Number->format($scheduledTime->id) ?></td>
                     <td><?= h($scheduledTime->start_time) ?></td>
                     <td><?= h($scheduledTime->end_time) ?></td>
-                    <td class="actions">
+                    <td class="">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $scheduledTime->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $scheduledTime->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $scheduledTime->id], ['confirm' => __('Are you sure you want to delete # {0}?', $scheduledTime->id)]) ?>

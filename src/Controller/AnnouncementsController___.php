@@ -11,7 +11,7 @@ class AnnouncementsController extends AppController
 {
     public function index()
     {
-        $query = $this->Announcements->find()->contain(['AnnouncementCategories']);
+        $query = $this->Announcements->find();
         $announcements = $this->paginate($query);
         $this->set(compact('announcements'));
     }
@@ -228,16 +228,4 @@ class AnnouncementsController extends AppController
             ->withStringBody(json_encode($users));
         return $this->response;
     }
-
-        public function preview()
-        {
-           
-            $announcements = $this->Announcements->find()
-            ->contain(['AnnouncementCategories']) // 👈 includes related categories
-            ->order(['created_at' => 'DESC'])
-            ->limit(10)
-            ->all();
-
-        $this->set(compact('announcements'));
-        }
 }

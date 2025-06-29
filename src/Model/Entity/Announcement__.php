@@ -33,7 +33,6 @@ class Announcement extends Entity
         'department' => true,
         'department_ids' => true,
         'image_file'=> true,
-        'category_id'=> true,
-        'announcement_name'=> true
+        'category_id'=> true
     ];
 }

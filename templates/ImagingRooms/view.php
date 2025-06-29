@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row">
-    <aside class="column">
+    <aside class="column  column-20"">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Imaging Room'), ['action' => 'edit', $imagingRoom->id], ['class' => 'side-nav-item']) ?>
@@ -15,8 +15,11 @@
         </div>
     </aside>
     <div class="column column-80">
-        <div class="imagingRooms view content">
-            <h3><?= h($imagingRoom->room_name) ?></h3>
+        <div class="imagingRooms management_table">
+            <div class="table_heading">
+            <h1><?= h($imagingRoom->room_name) ?></h1>
+</div>
+<div class="table-responsive">
             <table>
                 <tr>
                     <th><?= __('Room Name') ?></th>
@@ -35,8 +38,11 @@
                     <td><?= h($imagingRoom->updated_at) ?></td>
                 </tr>
             </table>
+</div>
             <div class="">
-                <h4><?= __('Related Exams') ?></h4>
+                <div class="table_heading">
+                <h1><?= __('Related Exams') ?></h1>
+</div>
                 <?php if (!empty($imagingRoom->exams)) : ?>
                 <div class="table-responsive">
                     <table>
@@ -67,10 +73,10 @@
                             <td><?= h($exam->imaging_room_id) ?></td>
                             <td><?= h($exam->technician_id) ?></td>
                             <td><?= h($exam->specialist_id) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Exams', 'action' => 'view', $exam->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Exams', 'action' => 'edit', $exam->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Exams', 'action' => 'delete', $exam->id], ['confirm' => __('Are you sure you want to delete # {0}?', $exam->id)]) ?>
+                            <td class="">
+                                <?= $this->Html->link(__(''), ['controller' => 'Exams', 'action' => 'view', $exam->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                                <?= $this->Html->link(__(''), ['controller' => 'Exams', 'action' => 'edit', $exam->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                                <?= $this->Form->postLink(__(''), ['controller' => 'Exams', 'action' => 'delete', $exam->id], ['confirm' => __('Are you sure you want to delete # {0}?', $exam->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -4,12 +4,14 @@
  * @var iterable<\App\Model\Entity\ImagingRoom> $imagingRooms
  */
 ?>
-<div class="imagingRooms index content">
+<div class="imagingRooms management_table">
+    <div class="table_heading">
+            <h1><?= __('Imaging Rooms') ?></h1>
     <?= $this->Html->link(__('New Imaging Room'), ['action' => 'add'], ['class' => 'themebtn']) ?>
-    <h3><?= __('Imaging Rooms') ?></h3>
+</div>
     <div class="table-responsive">
         <table>
-            <thead>
+            <thead class="thead-dark">
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('room_name') ?></th>
@@ -25,10 +27,10 @@
                     <td><?= h($imagingRoom->room_name) ?></td>
                     <td><?= h($imagingRoom->created_at) ?></td>
                     <td><?= h($imagingRoom->updated_at) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $imagingRoom->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $imagingRoom->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $imagingRoom->id], ['confirm' => __('Are you sure you want to delete # {0}?', $imagingRoom->id)]) ?>
+                    <td class="">
+                        <?= $this->Html->link(__(''), ['action' => 'view', $imagingRoom->id], ['class'=> 'bg-primary-light fa fa-eye']) ?>
+                        <?= $this->Html->link(__(''), ['action' => 'edit', $imagingRoom->id], ['class'=> 'bg-primary-light fa fa-edit']) ?>
+                        <?= $this->Form->postLink(__(''), ['action' => 'delete', $imagingRoom->id], ['confirm' => __('Are you sure you want to delete # {0}?', $imagingRoom->id), 'class'=> 'bg-primary-light fa fa-trash']) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
