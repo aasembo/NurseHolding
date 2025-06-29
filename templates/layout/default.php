@@ -336,6 +336,10 @@ footer p{
     </ul>
   </li>
 
+  <li class="nav-item">
+    <a class="nav-link" href="<?= $this->Url->build(['controller' => 'Announcements', 'action' => 'preview']) ?>">Announcement Schedule</a>
+  </li>
+
 </ul>
 
       </div>
