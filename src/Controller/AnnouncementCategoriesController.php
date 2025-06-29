@@ -97,7 +97,7 @@ class AnnouncementCategoriesController extends AppController
     //     'contain' => ['Announcements']
     // ]);
 
-    $this->AnnouncementCategories->get(id: $id, contain: ['Announcements']);
+    $this->AnnouncementCategories->get($id, contain: ['Announcements']);
 
 
     // Prevent deletion if related announcements exist
