@@ -1,5 +1,13 @@
 <?php
 declare(strict_types=1);
+// Hide warnings and notices
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
+// Don't display errors
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', '0');
+
+error_reporting(E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED);
 
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
