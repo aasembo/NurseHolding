@@ -93,9 +93,12 @@ class AnnouncementCategoriesController extends AppController
 {
     $this->request->allowMethod(['post', 'delete']);
 
-    $announcementCategory = $this->AnnouncementCategories->get($id, [
-        'contain' => ['Announcements']
-    ]);
+    // $announcementCategory = $this->AnnouncementCategories->get($id, [
+    //     'contain' => ['Announcements']
+    // ]);
+
+    $this->AnnouncementCategories->get(id: $id, contain: ['Announcements']);
+
 
     // Prevent deletion if related announcements exist
     if (!empty($announcementCategory->announcements)) {
