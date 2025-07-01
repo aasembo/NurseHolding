@@ -80,29 +80,33 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         $service = new AuthenticationService();
 
-        // Load the identifier (password-based login)
         $service->loadIdentifier('Authentication.Password', [
             'fields' => [
                 'username' => 'username',
                 'password' => 'password',
             ],
         ]);
-        
 
-        // Load authenticators: session first, then form
         $service->loadAuthenticator('Authentication.Session');
+
+        $path = $request->getUri()->getPath();
+        $loginUrl = '/login';
+        if (strpos($path, '/admins') === 0) {
+            $loginUrl = '/admins/login';
+        }
+
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => [
                 'username' => 'username',
                 'password' => 'password',
             ],
-            'loginUrl' => '/users/login',
+            'loginUrl' => $loginUrl,
         ]);
-        // Redirect URL after login
-$service->setConfig([
-    'unauthenticatedRedirect' => '/users/login',
-    'queryParam' => 'redirect',
-]);
+
+        $service->setConfig([
+            'unauthenticatedRedirect' => $loginUrl,
+            'queryParam' => 'redirect',
+        ]);
 
         return $service;
     }

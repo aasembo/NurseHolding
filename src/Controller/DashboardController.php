@@ -720,19 +720,20 @@ class DashboardController extends AppController
             }
 
             // Query with join to Patients
+            // Query with join to Patients
             $query = $this->Exams->find()
-                ->select([
-                    'day' => 'DATE(Exams.created_at)',
-                    'total' => $this->Exams->find()->func()->count('*')
-                ])
-                ->contain(['Patients']) // includes the Patients table
-                ->matching('Patients', function ($q) use ($conditions) {
-                    // let outer $conditions apply to joined Patients table too
-                    return $q->where($conditions);
-                })
-                ->group('day')
-                ->enableHydration(false)
-                ->toArray();
+            ->select([
+                'day' => 'DATE(Exams.created_at)',
+                'total' => $this->Exams->find()->func()->count('*'),
+                'Exams.patient_id' // ✅ add this line
+            ])
+            ->contain(['Patients'])
+            ->matching('Patients', function ($q) use ($conditions) {
+                return $q->where($conditions);
+            })
+            ->group('day')
+            ->enableHydration(false)
+            ->toArray();
 
             // Format result
             $dateMap = [];
