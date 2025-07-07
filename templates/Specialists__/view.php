@@ -23,10 +23,6 @@
                     <td><?= h($specialist->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('DOB') ?></th>
-                    <td><?= h($specialist->dob) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Email') ?></th>
                     <td><?= h($specialist->email) ?></td>
                 </tr>

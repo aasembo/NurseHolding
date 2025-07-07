@@ -42,10 +42,6 @@
                     <td><?= h($nurse->specialty) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('DOB') ?></th>
-                    <td><?= h($nurse->dob) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($nurse->id) ?></td>
                 </tr>

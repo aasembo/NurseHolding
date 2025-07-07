@@ -21,36 +21,10 @@
                     echo $this->Form->control('email');
                     echo $this->Form->control('phone');
                     echo $this->Form->control('specialty');
-                 // Toggle checkbox for DOB
-                    echo $this->Form->control('show_dob', [
-                        'type' => 'checkbox',
-                        'label' => 'Add Date of Birth',
-                        'id' => 'toggleDob'
-                    ]);
                 ?>
-
-                <!-- DOB input field (hidden by default) -->
-                <div id="dobField" style="display: none;">
-                    <?= $this->Form->control('dob', [
-                        'type' => 'date',
-                        'label' => 'Date of Birth'
-                    ]) ?>
-                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
 </div>
-
-<!-- JavaScript to handle toggle -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggle = document.getElementById('toggleDob');
-        const dobField = document.getElementById('dobField');
-
-        toggle.addEventListener('change', function () {
-            dobField.style.display = this.checked ? 'block' : 'none';
-        });
-    });
-</script>

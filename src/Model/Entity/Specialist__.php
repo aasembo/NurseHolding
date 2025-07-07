@@ -33,6 +33,5 @@ class Specialist extends Entity
         'phone' => true,
         'specialty' => true,
         'exams' => true,
-        'dob' => true,
     ];
 }

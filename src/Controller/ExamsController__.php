@@ -5,12 +5,6 @@ namespace App\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\Log\Log;
 use Smalot\PdfParser\Parser;
-use Cake\I18n\FrozenTime;
-
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-
 
 /**
 * Exams Controller
@@ -922,18 +916,19 @@ class ExamsController extends AppController {
 
 
 
-
-    public function exportCsv()
-    {
-        // Start output buffering
-        ob_start();
-
+    public function export() {
+        $this->response = $this->response->withDownload('exams_export.csv');
         $examsTable = $this->Exams;
 
+        // Fetch data from the Exams table
         $exams = $examsTable->find('all', [
-            'contain' => ['Patients.NursingIntervention', 'Technicians', 'Locations', 'ScheduledTimes', 'Diagnosis', 'Sedations', 'ImagingRooms']
+            'contain' => ['Patients', 'Technicians', 'Locations', 'ScheduledTime', 'Diagnosis', 'Sedations', 'NursingIntervention'] // Include all related tables
         ])->toArray();
 
+        // Open a memory stream for the CSV
+        $csvFile = fopen('php://output', 'w');
+
+        // Write the header row
         $headers = [
             'Visit Number',
             'MRN',
@@ -962,210 +957,79 @@ class ExamsController extends AppController {
             'Exam',
             'Code',
             'Ordered By',
-            'Sedation',
-            'Nursing Interventions'
         ];
+        fputcsv($csvFile, $headers);
 
-        $fp = fopen('php://output', 'w');
-        fputcsv($fp, $headers);
-
+        // Write data rows
         foreach ($exams as $exam) {
             $row = [
                 $exam->patient->visit_number ?? 'N/A',
                 $exam->patient->medical_record_number ?? 'N/A',
                 $exam->patient->accession ?? 'N/A',
                 $exam->status ?? 'N/A',
-                $exam->ordered_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->scheduled_time?->ScheduledTime?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->scheduled_time?->start_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->scheduled_time && $exam->scheduled_time->ScheduledTime && $exam->scheduled_time->start_time
-                    ? $exam->scheduled_time->ScheduledTime->diff($exam->scheduled_time->start_time)->format('%H:%I:%S') : 'N/A',
-                $exam->scheduled_time?->end_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->finalized_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->reading_provider->name ?? 'N/A',
-                $exam->scheduled_to_begin?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->begin_to_complete?->format('Y-m-d H:i:s') ?? 'N/A',
+                $exam->ordered_time ? $exam->ordered_time->format('Y-m-d H:i:s') : 'N/A',
+                $exam->scheduled_time ? $exam->scheduled_time->format('Y-m-d H:i:s') : 'N/A',
+                $exam->begin_time ? $exam->begin_time->format('Y-m-d H:i:s') : 'N/A',
+                $exam->ordered_time && $exam->begin_time ? $exam->ordered_time->diff($exam->begin_time)->format('%H:%I:%S') : 'N/A',
+                $exam->completed_time ? $exam->completed_time->format('Y-m-d H:i:s') : 'N/A',
+                $exam->finalized_time ? $exam->finalized_time->format('Y-m-d H:i:s') : 'N/A',
+                $exam->reading_provider ? $exam->reading_provider->name : 'N/A',
+                $exam->scheduled_to_begin ? $exam->scheduled_to_begin->format('Y-m-d H:i:s') : 'N/A',
+                $exam->begin_to_complete ? $exam->begin_to_complete->format('Y-m-d H:i:s') : 'N/A',
                 $exam->comments ?? 'N/A',
-                $exam->complete_to_finalized?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->date_of_service?->format('Y-m-d') ?? 'N/A',
-                trim(($exam->patient->FirstName ?? '') . ' ' . ($exam->patient->LastName ?? '')),
+                $exam->complete_to_finalized ? $exam->complete_to_finalized->format('Y-m-d H:i:s') : 'N/A',
+                $exam->date_of_service ? $exam->date_of_service->format('Y-m-d') : 'N/A',
+                $exam->patient->FirstName . ' ' . $exam->patient->LastName,
                 $exam->exam_type ?? 'N/A',
-                $exam->imaging_room->room_name ?? 'N/A',
-                $exam->diagnosis->diagnosis_text ?? 'N/A',
+                $exam->imaging_room ? $exam->imaging_room->name : 'N/A',
+                $exam->diagnosis ? $exam->diagnosis->diagnosis_text : 'N/A',
                 $exam->patient->patient_type ?? 'N/A',
-                $exam->technician->name ?? 'N/A',
+                $exam->technician ? $exam->technician->name : 'N/A',
                 $exam->start_or_asap ? 'Start' : 'ASAP',
-                $exam->location->name ?? 'N/A',
+                $exam->location ? $exam->location->name : 'N/A',
                 $exam->exam_type ?? 'N/A',
                 $exam->status ?? 'N/A',
-                $exam->ordered_by->name ?? 'N/A',
+                $exam->ordered_by ? $exam->ordered_by->name : 'N/A',
+
             ];
-
-            // Sedation(s)
-            if (!empty($exam->sedations)) {
-                $sedationStr = implode('; ', array_map(function ($s) {
-                    return "{$s->sedation_type} ({$s->dose})";
-                }, $exam->sedations));
-                $row[] = $sedationStr;
+            // Add sedations if available
+            if ( !empty( $exam->sedations ) ) {
+                foreach ( $exam->sedations as $sedation ) {
+                    $row[] = $sedation->sedation_type . ' (' . $sedation->dose . ')';
+                }
             } else {
                 $row[] = 'N/A';
             }
-
-            // Nursing Interventions
-            if (!empty($exam->patient->nursing_intervention)) {
-                $ni = $exam->patient->nursing_intervention;
-                $row[] = "Child Life: {$ni->child_life}, PIV: {$ni->piv}, Comments: {$ni->comments}";
+            // Add nursing interventions if available
+            if ( !empty( $exam->nursing_intervention ) ) {
+                $nursingIntervention = $exam->nursing_intervention;
+                $row[] = implode( ', ', [
+                    'Child Life: ' . $nursingIntervention->child_life,
+                    'PIV: ' . $nursingIntervention->piv,
+                    'Comments: ' . $nursingIntervention->comments,
+                ] );
             } else {
                 $row[] = 'N/A';
             }
-
-            fputcsv($fp, $row);
+            // Write the row to the CSV file
+            $row = array_map( function ( $value ) {
+                return is_null( $value ) ? 'N/A' : $value;
+            }, $row );
+            // Ensure all values are strings for CSV compatibility
+            $row = array_map( 'strval', $row );
+            // Write the row to the CSV file
+            $row = array_pad( $row, count( $headers ), 'N/A' ); // Ensure row has the same number of columns as headers
+            $row = array_slice( $row, 0, count( $headers ) ); // Trim to match header count
+            // Write the row to the CSV file
+            $row = array_map( function ( $value ) {
+                return is_null( $value ) ? 'N/A' : $value;
+            }, $row );
+            // Ensure all values are strings for CSV compatibility
+                
+            fputcsv($csvFile, $row);
         }
 
-        fclose($fp);
-
-        // Get the output buffer contents
-        $csvData = ob_get_clean();
-
-        // Return response
-        return $this->response
-            ->withType('csv')
-            ->withHeader('Content-Disposition', 'attachment; filename="exams_export.csv"')
-            ->withStringBody($csvData);
+        fclose($csvFile);
+        return $this->response;
     }
-
-
-    public function exportXls()
-    {
-        $examsTable = $this->Exams;
-
-        $exams = $examsTable->find('all', [
-            'contain' => ['Patients.NursingIntervention', 'Technicians', 'Locations', 'ScheduledTimes', 'Diagnosis', 'Sedations', 'ImagingRooms']
-        ])->toArray();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Define headers
-        $headers = [
-            'Visit Number',
-            'MRN',
-            'Accession',
-            'Exam Status',
-            'Ordered Time',
-            'Scheduled Time',
-            'Begin Time',
-            'Ordered-Begin',
-            'Completed Time',
-            'Finalized Time',
-            'Reading Provider',
-            'Scheduled to Begin',
-            'Begin to Complete',
-            'Comments',
-            'Complete to Finalized',
-            'Date of Service',
-            'Name',
-            'Exam',
-            'Exam Room',
-            'Diagnosis',
-            'Patient Type (O or I)',
-            'Technician',
-            'Start or ASAP',
-            'Site',
-            'Exam',
-            'Code',
-            'Ordered By',
-            'Sedation',
-            'Nursing Interventions'
-        ];
-
-        // Write header row
-        foreach ($headers as $colIndex => $header) {
-            $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1);
-            $cell = $columnLetter . '1';
-            $sheet->setCellValue($cell, $header);
-        }
-        $rowIndex = 2;
-        foreach ($exams as $exam) {
-            $row = [
-                $exam->patient->visit_number ?? 'N/A',
-                $exam->patient->medical_record_number ?? 'N/A',
-                $exam->patient->accession ?? 'N/A',
-                $exam->status ?? 'N/A',
-                $exam->ordered_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->scheduled_time?->ScheduledTime?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->scheduled_time?->start_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->scheduled_time && $exam->scheduled_time->ScheduledTime && $exam->scheduled_time->start_time
-                    ? $exam->scheduled_time->ScheduledTime->diff($exam->scheduled_time->start_time)->format('%H:%I:%S') : 'N/A',
-                $exam->scheduled_time?->end_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->finalized_time?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->reading_provider->name ?? 'N/A',
-                $exam->scheduled_to_begin?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->begin_to_complete?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->comments ?? 'N/A',
-                $exam->complete_to_finalized?->format('Y-m-d H:i:s') ?? 'N/A',
-                $exam->date_of_service?->format('Y-m-d') ?? 'N/A',
-                trim(($exam->patient->FirstName ?? '') . ' ' . ($exam->patient->LastName ?? '')),
-                $exam->exam_type ?? 'N/A',
-                $exam->imaging_room->room_name ?? 'N/A',
-                $exam->diagnosis->diagnosis_text ?? 'N/A',
-                $exam->patient->patient_type ?? 'N/A',
-                $exam->technician->name ?? 'N/A',
-                $exam->start_or_asap ? 'Start' : 'ASAP',
-                $exam->location->name ?? 'N/A',
-                $exam->exam_type ?? 'N/A',
-                $exam->status ?? 'N/A',
-                $exam->ordered_by->name ?? 'N/A',
-            ];
-
-            // Sedation(s)
-            if (!empty($exam->sedations)) {
-                $sedationStr = implode('; ', array_map(function ($s) {
-                    return "{$s->sedation_type} ({$s->dose})";
-                }, $exam->sedations));
-                $row[] = $sedationStr;
-            } else {
-                $row[] = 'N/A';
-            }
-
-            // Nursing Interventions
-            if (!empty($exam->patient->nursing_intervention)) {
-                $ni = $exam->patient->nursing_intervention;
-                $row[] = "Child Life: {$ni->child_life}, PIV: {$ni->piv}, Comments: {$ni->comments}";
-            } else {
-                $row[] = 'N/A';
-            }
-
-            // Write row
-            foreach ($row as $colIndex => $cellValue) {
-                $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1);
-                $cell = $columnLetter . $rowIndex;
-                $sheet->setCellValue($cell, $cellValue);
-            }
-
-            $rowIndex++;
-        }
-
-        // Output as XLSX
-        $filename = 'exams_export_' . date('Ymd_His') . '.xlsx';
-
-        // Clear output buffer
-        ob_clean();
-
-        // Set headers
-        $this->response = $this->response
-            ->withType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            ->withDownload($filename);
-
-        $writer = new Xlsx($spreadsheet);
-        $tempFile = tmpfile();
-        $meta = stream_get_meta_data($tempFile);
-        $filePath = $meta['uri'];
-        $writer->save($filePath);
-
-        $stream = fopen($filePath, 'rb');
-        return $this->response->withBody(new \Laminas\Diactoros\Stream($stream));
-    }
-
-
 }

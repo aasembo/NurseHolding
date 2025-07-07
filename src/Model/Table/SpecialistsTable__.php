@@ -7,8 +7,6 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Event\EventInterface;
-use ArrayObject;
 
 /**
  * Specialists Model
@@ -79,10 +77,6 @@ class SpecialistsTable extends Table
             ->scalar('specialty')
             ->maxLength('specialty', 255)
             ->allowEmptyString('specialty');
-        
-        $validator
-            ->date('dob')
-            ->allowEmptyDate('dob');
 
         return $validator;
     }
@@ -100,19 +94,4 @@ class SpecialistsTable extends Table
 
         return $rules;
     }
-
-    /**
-     * beforeMarshal event - removes DOB if toggle unchecked
-     *
-     * @param \Cake\Event\EventInterface $event
-     * @param \ArrayObject $data
-     * @param \ArrayObject $options
-     * @return void
-     */
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
-    {
-        if (!isset($data['show_dob']) || !$data['show_dob']) {
-             $data['dob'] = null;
-        }
-    } 
 }

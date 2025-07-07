@@ -46,6 +46,7 @@ class SpecialistsController extends AppController
         $specialist = $this->Specialists->newEmptyEntity();
         if ($this->request->is('post')) {
             $specialist = $this->Specialists->patchEntity($specialist, $this->request->getData());
+            // debug($specialist);
             if ($this->Specialists->save($specialist)) {
                 $this->Flash->success(__('The specialist has been saved.'));
 

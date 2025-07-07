@@ -6,17 +6,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Specialist Entity
+ * Nurse Entity
  *
  * @property int $id
- * @property string $name
+ * @property string $LastName
+ * @property string $FirstName
  * @property string $email
- * @property string|null $phone
+ * @property string|null $VoalteNumber
  * @property string|null $specialty
  *
- * @property \App\Model\Entity\Exam[] $exams
+ * @property \App\Model\Entity\CareAssignment[] $care_assignments
  */
-class Specialist extends Entity
+class Nurse extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -28,11 +29,11 @@ class Specialist extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'name' => true,
+        'LastName' => true,
+        'FirstName' => true,
         'email' => true,
-        'phone' => true,
+        'VoalteNumber' => true,
         'specialty' => true,
-        'exams' => true,
-        'dob' => true,
+        'care_assignments' => true,
     ];
 }

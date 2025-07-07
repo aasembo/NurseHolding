@@ -8,6 +8,11 @@
     <aside class="column column-20">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?= $this->Form->postLink(
+                __('Delete'),
+                ['action' => 'delete', $specialist->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $specialist->id), 'class' => 'side-nav-item']
+            ) ?>
             <?= $this->Html->link(__('List Specialists'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
@@ -15,25 +20,28 @@
         <div class="specialists form content table_form">
             <?= $this->Form->create($specialist) ?>
             <fieldset>
-                <h1><?= __('Add Specialist') ?></h1>
+                <h1><?= __('Edit Specialist') ?></h1>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('email');
                     echo $this->Form->control('phone');
                     echo $this->Form->control('specialty');
-                 // Toggle checkbox for DOB
+                 // Toggle checkbox
                     echo $this->Form->control('show_dob', [
                         'type' => 'checkbox',
-                        'label' => 'Add Date of Birth',
-                        'id' => 'toggleDob'
+                        'label' => 'Edit Date of Birth',
+                        'id' => 'toggleDob',
+                        'checked' => !empty($specialist->dob), // checked if DOB is already present
+                        'value' => 1
                     ]);
                 ?>
 
-                <!-- DOB input field (hidden by default) -->
-                <div id="dobField" style="display: none;">
+                <!-- DOB input field -->
+                <div id="dobField" style="display: <?= !empty($specialist->dob) ? 'block' : 'none' ?>;">
                     <?= $this->Form->control('dob', [
                         'type' => 'date',
-                        'label' => 'Date of Birth'
+                        'label' => 'Date of Birth',
+                        'value' => $specialist->dob ? $specialist->dob->format('Y-m-d') : ''
                     ]) ?>
                 </div>
             </fieldset>
@@ -42,15 +50,3 @@
         </div>
     </div>
 </div>
-
-<!-- JavaScript to handle toggle -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggle = document.getElementById('toggleDob');
-        const dobField = document.getElementById('dobField');
-
-        toggle.addEventListener('change', function () {
-            dobField.style.display = this.checked ? 'block' : 'none';
-        });
-    });
-</script>

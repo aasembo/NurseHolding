@@ -210,6 +210,7 @@ a {
     font-size: 30px;
 }
 
+
 @media(max-width:767px){
     .controller_list .row{
         flex-direction: column;

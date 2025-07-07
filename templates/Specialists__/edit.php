@@ -26,39 +26,10 @@
                     echo $this->Form->control('email');
                     echo $this->Form->control('phone');
                     echo $this->Form->control('specialty');
-                 // Toggle checkbox
-                    echo $this->Form->control('show_dob', [
-                        'type' => 'checkbox',
-                        'label' => 'Edit Date of Birth',
-                        'id' => 'toggleDob',
-                        'checked' => !empty($specialist->dob), // checked if DOB is already present
-                        'value' => 1
-                    ]);
                 ?>
-
-                <!-- DOB input field -->
-                <div id="dobField" style="display: <?= !empty($specialist->dob) ? 'block' : 'none' ?>;">
-                    <?= $this->Form->control('dob', [
-                        'type' => 'date',
-                        'label' => 'Date of Birth',
-                        'value' => $specialist->dob ? $specialist->dob->format('Y-m-d') : ''
-                    ]) ?>
-                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit'), ['class'=> 'btn']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
 </div>
-
-<!-- JavaScript for toggle logic -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggle = document.getElementById('toggleDob');
-        const dobField = document.getElementById('dobField');
-
-        toggle.addEventListener('change', function () {
-            dobField.style.display = this.checked ? 'block' : 'none';
-        });
-    });
-</script>

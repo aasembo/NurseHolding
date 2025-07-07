@@ -35,5 +35,6 @@ class Nurse extends Entity
         'VoalteNumber' => true,
         'specialty' => true,
         'care_assignments' => true,
+        'dob' => true,
     ];
 }

@@ -7,8 +7,6 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Event\EventInterface;
-use ArrayObject;
 
 /**
  * Nurses Model
@@ -86,10 +84,6 @@ class NursesTable extends Table
             ->maxLength('specialty', 255)
             ->allowEmptyString('specialty');
 
-        $validator
-            ->date('dob')
-            ->allowEmptyDate('dob');
-
         return $validator;
     }
 
@@ -103,21 +97,7 @@ class NursesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
-        return $rules;
-    }
 
-    /**
-     * beforeMarshal event - removes DOB if toggle unchecked
-     *
-     * @param \Cake\Event\EventInterface $event
-     * @param \ArrayObject $data
-     * @param \ArrayObject $options
-     * @return void
-     */
-    public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
-    {
-        if (!isset($data['show_dob']) || !$data['show_dob']) {
-            $data['dob'] = null;
-        }  
+        return $rules;
     }
 }

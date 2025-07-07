@@ -34,22 +34,12 @@ table td, table th{
     font-size:25px;
     font-weight:600;
 }
-
-.btn-margin {
-    margin-right: 10px;
-}
     </style>
 <div class="">
     <div class="column-responsive">
         <div class="patients index content">
-        <h3><?= __('Patient Information') ?></h3>
-
-        <div class="d-flex justify-content-end mb-3">
-            <?= $this->Html->link(__('Export CSV'), ['controller' => 'Exams', 'action' => 'exportCsv'], ['class' => 'themebtn btn-margin']) ?>
-            <?= $this->Html->link(__('Export XLS'), ['controller' => 'Exams', 'action' => 'exportXls'], ['class' => 'themebtn']) ?>
-        </div>
-
-        <div class="table-responsive">
+            <h3><?= __('Patient Information') ?></h3>
+            <div class="table-responsive">
             <table id="patients-table">
                 <thead>
                 <tr> <!-- Purple row -->  
