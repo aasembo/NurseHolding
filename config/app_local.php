@@ -36,7 +36,7 @@ return [
      */
     'Datasources' => [
         'default' => [
-            'host' => 'localhost',
+            'host' => 'ls-dfdca8bc9aa3c8f9b4032ab688e8570442e82c8e.catce0sa8gjb.us-east-1.rds.amazonaws.com',
             /*
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
@@ -44,10 +44,10 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'root',
-            'password' => '',
+            'username' => 'dbmasteruser',
+            'password' => '<ctDK1>q8rr<%q.Apf_TT4:Z~%4%XKG5',
 
-            'database' => 'dataratiba',
+            'database' => 'DataRatiba',
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -64,11 +64,10 @@ return [
          * The test connection is used during the test suite.
          */
         'test' => [
-            'host' => 'localhost',
-            //'port' => 'non_standard_port_number',
-            'username' => 'root',
-            'password' => '',
-            'database' => 'dataratiba',
+            'username' => 'dbmasteruser',
+            'password' => '<ctDK1>q8rr<%q.Apf_TT4:Z~%4%XKG5',
+
+            'database' => 'DataRatiba',
             //'schema' => 'myapp',
             'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tmp/tests.sqlite'),
         ],
