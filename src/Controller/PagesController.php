@@ -18,8 +18,10 @@ namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\Log\Log;
 use Cake\View\Exception\MissingTemplateException;
 
 /**
@@ -31,6 +33,15 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
+    public function beforeFilter(EventInterface $event): void {
+        parent::beforeFilter($event);
+        //Allow only home: ['controller' => 'Pages', 'action' => 'display', 'home']
+        $isHome = $this->request->getParam('action') === 'display' && (string)$this->request->getParam('pass.0') === 'home';
+        if ($isHome) {
+            $this->Authentication->addUnauthenticatedActions(['display']);
+        }
+    }
+
     /**
      * Displays a view
      *
