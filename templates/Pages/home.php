@@ -10,6 +10,9 @@ if (!Configure::read('debug')) {
 
 $routes = Router::routes();
 $base = Router::url('/', true);
+// Detect logged-in status via Authentication identity on the request
+$identity = $this->getRequest()->getAttribute('identity');
+$isLoggedIn = !empty($identity);
 
 // Manually define your controllers and common actions (dynamic discovery in CakePHP is limited)
 $controllers = [
@@ -104,6 +107,12 @@ $controllers = [
             <h3><?= h($controller) ?></h3>
             <ul class="link-list">
                 <?php foreach ($actions as $action): ?>
+                    <?php
+                        // Hide login when already logged in; hide logout if not logged in
+                        if (($action === 'login' && $isLoggedIn) || ($action === 'logout' && !$isLoggedIn)) {
+                            continue;
+                        }
+                    ?>
                     <?php if($action == 'index'){
                         $icon = $iconMap['index'];
                     }else if($action == 'add'){
