@@ -344,11 +344,19 @@ footer p{
 
       </div>
     </div>
+    <?php $identity = $this->getRequest()->getAttribute('identity'); $isLoggedIn = !empty($identity); ?>
     <div class="">
-         <a class="login_btn me-2" href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"><span class="d-inline-block d-sm-none"><i class="fa fa-sign-in" aria-hidden="true"></i>
-</span><span class="d-none d-sm-inline-block">Login</span></a>
-          <a class="login_btn" href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>"><span class="d-inline-block d-sm-none"><i class="fa fa-sign-out" aria-hidden="true"></i>
-</span><span class="d-none d-sm-inline-block">Logout</span></a>
+        <?php if (!$isLoggedIn): ?>
+            <a class="login_btn me-2" href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">
+                <span class="d-inline-block d-sm-none"><i class="fa fa-sign-in" aria-hidden="true"></i></span>
+                <span class="d-none d-sm-inline-block">Login</span>
+            </a>
+        <?php else: ?>
+            <a class="login_btn" href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">
+                <span class="d-inline-block d-sm-none"><i class="fa fa-sign-out" aria-hidden="true"></i></span>
+                <span class="d-none d-sm-inline-block">Logout</span>
+            </a>
+        <?php endif; ?>
     </div>
   </div>
 </nav>

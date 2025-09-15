@@ -1,93 +1,63 @@
 <?php
 /*
- * Local configuration file to provide any overrides to your app.php configuration.
- * Copy and save this file as app_local.php and make changes as required.
- * Note: It is not recommended to commit files with credentials such as app_local.php
- * into source code version control.
+ * Local configuration overrides for your application.
+ *
+ * Note: Do not commit real credentials to version control.
+ * You can also use environment variables instead of editing this file.
  */
 return [
-    /*
-     * Debug Level:
-     *
-     * Production Mode:
-     * false: No error messages, errors, or warnings shown.
-     *
-     * Development Mode:
-     * true: Errors and warnings shown.
-     */
+    // Set debug mode via env or toggle here for local dev
     'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
 
-    /*
-     * Security and encryption configuration
-     *
-     * - salt - A random string used in security hashing methods.
-     *   The salt value is also used as the encryption key.
-     *   You should treat it as extremely sensitive data.
-     */
+    // Security salt. In production set via env SECURITY_SALT
     'Security' => [
         'salt' => env('SECURITY_SALT', '79cf073d3c53e88c13fa62af3438015af7910eaa0ea9878ba719b3b766266e6b'),
     ],
 
-    /*
-     * Connection information used by the ORM to connect
-     * to your application's datastores.
-     *
-     * See app.php for more configuration options.
-     */
+    // Database connections
     'Datasources' => [
         'default' => [
-            'host' => 'ls-dfdca8bc9aa3c8f9b4032ab688e8570442e82c8e.catce0sa8gjb.us-east-1.rds.amazonaws.com',
-            /*
-             * CakePHP will use the default DB port based on the driver selected
-             * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
-             * the following line and set the port accordingly
-             */
-            //'port' => 'non_standard_port_number',
-
-            'username' => 'dbmasteruser',
-            'password' => '<ctDK1>q8rr<%q.Apf_TT4:Z~%4%XKG5',
-
-            'database' => 'DataRatiba',
-            /*
-             * If not using the default 'public' schema with the PostgreSQL driver
-             * set it here.
-             */
-            //'schema' => 'myapp',
-
-            /*
-             * You can use a DSN string to set the entire configuration
-             */
+            // Fill these or use DATABASE_URL
+            'host' => env('DB_HOST', 'ls-dfdca8bc9aa3c8f9b4032ab688e8570442e82c8e.catce0sa8gjb.us-east-1.rds.amazonaws.com'),
+            //'port' => env('DB_PORT', null),
+            'username' => env('DB_USER', 'dbmasteruser'),
+            'password' => env('DB_PASS', '<ctDK1>q8rr<%q.Apf_TT4:Z~%4%XKG5'),
+            'database' => env('DB_NAME', 'DataRatiba'),
+            // Alternatively use a DSN like: mysql://user:pass@host/dbname?encoding=utf8mb4&timezone=UTC
             'url' => env('DATABASE_URL', null),
         ],
 
-        /*
-         * The test connection is used during the test suite.
-         */
+        // Test connection (used by test suite)
         'test' => [
-            'username' => 'dbmasteruser',
-            'password' => '<ctDK1>q8rr<%q.Apf_TT4:Z~%4%XKG5',
-
-            'database' => 'DataRatiba',
-            //'schema' => 'myapp',
+            'host' => env('TEST_DB_HOST', env('DB_HOST', 'ls-dfdca8bc9aa3c8f9b4032ab688e8570442e82c8e.catce0sa8gjb.us-east-1.rds.amazonaws.com')),
+            //'port' => env('TEST_DB_PORT', env('DB_PORT', null)),
+            'username' => env('TEST_DB_USER', env('DB_USER', 'dbmasteruser')),
+            'password' => env('TEST_DB_PASS', env('DB_PASS', '<ctDK1>q8rr<%q.Apf_TT4:Z~%4%XKG5')),
+            'database' => env('TEST_DB_NAME', 'test_' . env('DB_NAME', 'DataRatiba')),
+            // By default tests use sqlite tmp DB; override with DATABASE_TEST_URL for MySQL/Postgres
             'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tmp/tests.sqlite'),
         ],
     ],
-
-    /*
-     * Email configuration.
-     *
-     * Host and credential configuration in case you are using SmtpTransport
-     *
-     * See app.php for more configuration options.
-     */
+    // Email transport (optional to customize locally)
     'EmailTransport' => [
         'default' => [
-            'host' => 'localhost',
-            'port' => 25,
-            'username' => null,
-            'password' => null,
+            'host' => env('MAIL_HOST', 'localhost'),
+            'port' => (int)env('MAIL_PORT', 25),
+            'username' => env('MAIL_USER', null),
+            'password' => env('MAIL_PASS', null),
             'client' => null,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+        ],
+    ],
+    'Error' => [
+        'errorLevel' => E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED,
+        'exceptionRenderer' => \Cake\Error\Renderer\WebExceptionRenderer::class,
+        'ignoredDeprecationPaths' => [
+            'vendor/cakephp/cakephp/src/ORM/Table.php',
+            'vendor/cakephp/cakephp/src/Core/functions.php',
+            'vendor/cakephp/cakephp/src/Http/ResponseEmitter.php',
+            'vendor/cakephp/cakephp/src/Cache/Engine/FileEngine.php',
+            realpath('vendor/cakephp/cakephp/src/ORM/Table.php'),
         ],
     ],
 ];
