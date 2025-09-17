@@ -71,13 +71,13 @@ require CAKE . 'functions.php';
 //         ->toEnv()
 //         ->toServer();
 // }
-if (!env('APP_NAME') && file_exists(CONFIG . '.env')) {
+/**if (file_exists(CONFIG . '.env') && class_exists('josegonzalez\\Dotenv\\Loader')) {
     $dotenv = new \josegonzalez\Dotenv\Loader([CONFIG . '.env']);
     $dotenv->parse()
         ->putenv()
         ->toEnv()
         ->toServer();
-}
+}*/
 /*
  * Initializes default Config store and loads the main configuration file (app.php)
  *
@@ -98,6 +98,10 @@ try {
  */
 if (file_exists(CONFIG . 'app_local.php')) {
     Configure::load('app_local', 'default');
+}
+
+if (file_exists(CONFIG . 'app_okta_config.php')) {
+    Configure::load('app_okta_config', 'default');
 }
 
 /*

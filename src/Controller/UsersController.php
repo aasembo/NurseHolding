@@ -24,9 +24,11 @@ class UsersController extends AppController
 
     public function login() {
         //Redirect to /auth/login if okta is enabled
-        if ((string)env('AUTH_DRIVER', 'local') === 'okta') {
+        $driver = (string)\Cake\Core\Configure::read('App.authDriver', (string)env('AUTH_DRIVER', 'local'));
+        if ($driver === 'okta') {
             return $this->redirect(['controller' => 'Auth', 'action' => 'login']);
         }
+        
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
 
@@ -48,9 +50,11 @@ class UsersController extends AppController
 
     public function logout() {
         //Redirect to /auth/logout if okta is enabled
-        if ((string)env('AUTH_DRIVER', 'local') === 'okta') {
+        $driver = (string)\Cake\Core\Configure::read('App.authDriver', (string)env('AUTH_DRIVER', 'local'));
+        if ($driver === 'okta') {
             return $this->redirect(['controller' => 'Auth', 'action' => 'logout']);
         }
+        
         $this->request->getSession()->destroy(); // Optional: destroy session
         $this->Authentication->logout();
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
