@@ -21,7 +21,7 @@ use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Identifier\IdentifierInterface;
-
+use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -44,7 +44,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
-        $this->addPlugin('Authentication');
+        //$this->addPlugin('Authentication');
     }
 
     /**
@@ -78,31 +78,41 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $service = new AuthenticationService();
-
-        // Load the identifier (password-based login)
-        $service->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'username',
-                'password' => 'password',
-            ],
+        $authDriver = (string)\Cake\Core\Configure::read('App.authDriver', 'local');
+        $unauthRedirect = Router::url($authDriver === 'okta' ? '/auth/login' : '/users/login');
+        $service = new AuthenticationService([
+            'unauthenticatedRedirect' => $unauthRedirect,
+            'queryParam' => 'redirect',
         ]);
+
+        if ($authDriver === 'local') {
+            // Load the identifier (password-based login)
+            $service->loadIdentifier('Authentication.Password', [
+                'fields' => [
+                    'username' => 'username',
+                    'password' => 'password',
+                ],
+            ]);
+        }
         
 
         // Load authenticators: session first, then form
         $service->loadAuthenticator('Authentication.Session');
-        $service->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'username',
-                'password' => 'password',
-            ],
-            'loginUrl' => '/users/login',
-        ]);
-        // Redirect URL after login
-$service->setConfig([
-    'unauthenticatedRedirect' => '/users/login',
-    'queryParam' => 'redirect',
-]);
+        if ($authDriver === 'local') {
+            $service->loadAuthenticator('Authentication.Form', [
+                'fields' => [
+                    'username' => 'username',
+                    'password' => 'password',
+                ],
+                'loginUrl' => '/users/login',
+            ]);
+        }
+
+        // // Redirect URL after login
+        // $service->setConfig([
+        //     'unauthenticatedRedirect' => '/users/login',
+        //     'queryParam' => 'redirect',
+        // ]);
 
         return $service;
     }

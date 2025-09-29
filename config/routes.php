@@ -57,6 +57,12 @@ return function (RouteBuilder $routes): void {
          */
         $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
+        //Okta OIDC auth routes
+        $builder->connect('/auth/login', ['controller' => 'Auth', 'action' => 'login']);
+        $builder->connect('/auth/callback', ['controller' => 'Auth', 'action' => 'callback']);
+        $builder->connect('/logout', ['controller' => 'Auth', 'action' => 'logout']);
+        $builder->connect('/logout/complete', ['controller' => 'Auth', 'action' => 'complete']);
+
         /*
          * ...and connect the rest of 'Pages' controller's URLs.
          */

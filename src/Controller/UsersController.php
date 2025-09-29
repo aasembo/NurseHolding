@@ -17,47 +17,49 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      */
 
-     public function beforeFilter(\Cake\Event\EventInterface $event)
-     {
-         parent::beforeFilter($event);
-         $this->Authentication->addUnauthenticatedActions(['login']);
-     }
+    public function beforeFilter(\Cake\Event\EventInterface $event) {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['login']);
+    }
 
+    public function login() {
+        //Redirect to /auth/login if okta is enabled
+        $driver = (string)\Cake\Core\Configure::read('App.authDriver', (string)env('AUTH_DRIVER', 'local'));
+        if ($driver === 'okta') {
+            return $this->redirect(['controller' => 'Auth', 'action' => 'login']);
+        }
+        
+        $this->request->allowMethod(['get', 'post']);
+        $result = $this->Authentication->getResult();
 
+        if ($result->isValid()) {
+            $redirect = $this->request->getQuery('redirect');
 
+            // If the redirect is unsafe or invalid, default to /users/index
+            if (!$redirect || !is_string($redirect) || strpos($redirect, '/') !== 0) {
+                $redirect = ['controller' => 'Users', 'action' => 'index'];
+            }
 
-     public function login()
-{
-    $this->request->allowMethod(['get', 'post']);
-    $result = $this->Authentication->getResult();
-
-    if ($result->isValid()) {
-        $redirect = $this->request->getQuery('redirect');
-
-        // If the redirect is unsafe or invalid, default to /users/index
-        if (!$redirect || !is_string($redirect) || strpos($redirect, '/') !== 0) {
-            $redirect = ['controller' => 'Users', 'action' => 'index'];
+            return $this->redirect($redirect);
         }
 
-        return $this->redirect($redirect);
+        if ($this->request->is('post') && !$result->isValid()) {
+            $this->Flash->error('Invalid username or password');
+        }
     }
 
-    if ($this->request->is('post') && !$result->isValid()) {
-        $this->Flash->error('Invalid username or password');
+    public function logout() {
+        //Redirect to /auth/logout if okta is enabled
+        $driver = (string)\Cake\Core\Configure::read('App.authDriver', (string)env('AUTH_DRIVER', 'local'));
+        if ($driver === 'okta') {
+            return $this->redirect(['controller' => 'Auth', 'action' => 'logout']);
+        }
+        
+        $this->request->getSession()->destroy(); // Optional: destroy session
+        $this->Authentication->logout();
+        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
-}
 
-
-
-
-public function logout()
-{
-    $this->request->getSession()->destroy(); // Optional: destroy session
-
-    $this->Authentication->logout();
-
-    return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-}
     /**
      * View method
      *
@@ -134,14 +136,12 @@ public function logout()
     }
 
     public function index()
-{
-    $this->paginate = [
-        'limit' => 10,
-        'order' => ['Users.username' => 'asc'],
-    ];
-    $users = $this->paginate($this->Users);
-    $this->set(compact('users'));
-}
-
-
+    {
+        $this->paginate = [
+            'limit' => 10,
+            'order' => ['Users.username' => 'asc'],
+        ];
+        $users = $this->paginate($this->Users);
+        $this->set(compact('users'));
+    }
 }

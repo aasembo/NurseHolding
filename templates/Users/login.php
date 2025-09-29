@@ -87,8 +87,6 @@ input:-internal-autofill-selected{
  */
 ?>
 <div class="patients index content login_box">
-<?//= $this->Html->link(__('Home Page'), ['controller' => 'Pages', 'action' => 'display', 'home'], ['class' => 'themebtn']) ?>
-    <h3><?//= __('Users') ?></h3>
     <div class="center-wrap">
     <h2>Login</h2>
 <?= $this->Form->create() ?>
