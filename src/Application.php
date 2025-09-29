@@ -85,17 +85,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'queryParam' => 'redirect',
         ]);
 
-        if ($authDriver === 'local') {
-            // Load the identifier (password-based login)
-            $service->loadIdentifier('Authentication.Password', [
-                'fields' => [
-                    'username' => 'username',
-                    'password' => 'password',
-                ],
-            ]);
-        }
-        
-
         // Load authenticators: session first, then form
         $service->loadAuthenticator('Authentication.Session');
         if ($authDriver === 'local') {
@@ -105,6 +94,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                     'password' => 'password',
                 ],
                 'loginUrl' => '/users/login',
+                'identifier' => [
+                    'className' => 'Authentication.Password',
+                    'fields' => [
+                        'username' => 'username',
+                        'password' => 'password',
+                    ],
+                ],
             ]);
         }
 
