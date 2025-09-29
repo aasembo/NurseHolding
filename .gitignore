@@ -1,8 +1,6 @@
 # CakePHP specific files #
 ##########################
-/config/app_local.php
-/config/.env
-/config/app_okta_config.php
+/config/*
 /logs/*
 /tmp/*
 /vendor/*
