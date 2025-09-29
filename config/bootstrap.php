@@ -101,7 +101,7 @@ if (file_exists(CONFIG . 'app_local.php')) {
 }
 
 if (file_exists(CONFIG . 'app_okta_config.php')) {
-    Configure::load('app_okta_config', 'default');
+    Configure::load('app_okta_config', 'default'); //okta config
 }
 
 /*
