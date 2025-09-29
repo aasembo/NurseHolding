@@ -1,5 +1,5 @@
 <?php
-return [ 
+return [
     'App' => [
         'fullBaseUrl' => 'https://prod.nurseholding.dataratiba.com',
         'authDriver' => 'okta',
