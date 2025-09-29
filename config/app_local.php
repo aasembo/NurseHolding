@@ -7,7 +7,7 @@
  */
 return [
     // Set debug mode via env or toggle here for local dev
-    'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+    'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
 
     // Security salt. In production set via env SECURITY_SALT
     'Security' => [
