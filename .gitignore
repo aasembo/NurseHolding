@@ -51,5 +51,3 @@ nbproject/*
 # yarn
 yarn-debug.log
 yarn-error.log
-#config/.env
-#config/app_okta_config.php
